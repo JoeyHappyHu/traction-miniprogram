@@ -1,0 +1,9 @@
+{
+  "name": "generate-card",
+  "version": "1.0.0",
+  "description": "Generate emotion cards with hunyuan-image",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.0"
+  }
+}

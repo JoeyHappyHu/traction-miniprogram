@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traction IP形象设计方案</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: #FFF8F0;
+  padding: 40px 20px;
+  color: #2D2B3D;
+}
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #B388FF, #FF7EB3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.header p {
+  font-size: 14px;
+  color: #8B86A3;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 16px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(179, 136, 255, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(179, 136, 255, 0.15);
+}
+.card.selected {
+  border-color: #B388FF;
+  box-shadow: 0 4px 20px rgba(179, 136, 255, 0.2);
+}
+.card .svg-wrap {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 16px;
+}
+.card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #2D2B3D;
+}
+.card .concept {
+  font-size: 12px;
+  color: #8B86A3;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.card .tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #F3E8FF;
+  color: #B388FF;
+}
+.card .tag.pink { background: #FFF0F5; color: #FF7EB3; }
+.card .tag.blue { background: #E8F7FC; color: #7EC8E3; }
+.card .tag.orange { background: #FFF5E6; color: #FFB347; }
+
+.selected-badge {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 28px;
+  height: 28px;
+  background: #B388FF;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 14px;
+  line-height: 28px;
+  font-weight: 700;
+}
+.card.selected .selected-badge { display: block; }
+
+.note {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  background: #F3E8FF;
+  border-radius: 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.note p {
+  font-size: 13px;
+  color: #4A4766;
+  line-height: 1.8;
+}
+
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 700px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Traction IP形象设计方案</h1>
+  <p>参考 Finch / BuddyAI 有机blob风格 融入品牌色与定位 10组方案</p>
+</div>
+
+<div class="grid">
+
+<!-- 方案1: 路径团子 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <defs>
+        <filter id="g1"><feGaussianBlur stdDeviation="0.5" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+      </defs>
+      <path d="M30,85 Q20,60 35,40 Q45,20 70,25 Q95,30 100,55 Q105,80 85,95 Q65,108 40,100 Q25,95 30,85Z" fill="#B388FF" opacity="0.15"/>
+      <path d="M25,80 Q15,55 30,35 Q40,15 65,20 Q90,25 95,50 Q100,75 80,90 Q60,103 35,95 Q20,90 25,80Z" fill="#B388FF"/>
+      <!-- 路径纹理 -->
+      <path d="M35,60 Q50,50 60,55 Q70,60 75,50" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+      <path d="M45,70 Q55,65 65,70" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+      <!-- 眼睛 -->
+      <circle cx="48" cy="50" r="4" fill="#fff"/>
+      <circle cx="72" cy="50" r="4" fill="#fff"/>
+      <circle cx="48" cy="50" r="2" fill="#2D2B3D"/>
+      <circle cx="72" cy="50" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M52,62 Q60,68 68,62" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 小装饰 -->
+      <circle cx="30" cy="45" r="3" fill="#FF7EB3" opacity="0.6"/>
+      <circle cx="85" cy="80" r="2.5" fill="#FF7EB3" opacity="0.5"/>
+    </svg>
+  </div>
+  <h3>路径团子</h3>
+  <p class="concept">身上有分叉路径纹理，代表人生选择的十字路口，AI帮你看到每条路的风景</p>
+  <span class="tag">规划感</span>
+</div>
+
+<!-- 方案2: 灵感泡泡 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <circle cx="60" cy="62" r="38" fill="#FF7EB3" opacity="0.15"/>
+      <circle cx="60" cy="60" r="36" fill="#FF7EB3"/>
+      <!-- 高光 -->
+      <ellipse cx="45" cy="45" rx="10" ry="6" fill="#fff" opacity="0.3" transform="rotate(-30 45 45)"/>
+      <!-- 眼睛 -->
+      <circle cx="50" cy="55" r="4" fill="#fff"/>
+      <circle cx="70" cy="55" r="4" fill="#fff"/>
+      <circle cx="50" cy="55" r="2" fill="#2D2B3D"/>
+      <circle cx="70" cy="55" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M54,66 Q60,72 66,66" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 小泡泡 -->
+      <circle cx="85" cy="35" r="6" fill="#B388FF" opacity="0.4"/>
+      <circle cx="95" cy="45" r="3.5" fill="#B388FF" opacity="0.3"/>
+    </svg>
+  </div>
+  <h3>灵感泡泡</h3>
+  <p class="concept">半透明发光泡泡，代表AI带来的洞察和灵感瞬间，轻盈向上</p>
+  <span class="tag pink">洞察力</span>
+</div>
+
+<!-- 方案3: 成长芽芽 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <path d="M35,95 Q30,70 40,50 Q48,30 65,32 Q82,34 88,55 Q95,75 85,92 Q75,105 55,102 Q38,100 35,95Z" fill="#6BCB77" opacity="0.15"/>
+      <path d="M32,92 Q27,67 37,47 Q45,27 62,29 Q79,31 85,52 Q92,72 82,89 Q72,102 52,99 Q35,97 32,92Z" fill="#6BCB77"/>
+      <!-- 眼睛 -->
+      <circle cx="50" cy="55" r="4" fill="#fff"/>
+      <circle cx="70" cy="55" r="4" fill="#fff"/>
+      <circle cx="50" cy="55" r="2" fill="#2D2B3D"/>
+      <circle cx="70" cy="55" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M54,66 Q60,72 66,66" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 叶子 -->
+      <path d="M60,28 Q55,15 50,18 Q48,20 55,28Z" fill="#6BCB77"/>
+      <path d="M65,27 Q72,14 76,18 Q78,20 70,28Z" fill="#A5E6AF"/>
+      <!-- 装饰 -->
+      <circle cx="35" cy="75" r="2" fill="#fff" opacity="0.4"/>
+    </svg>
+  </div>
+  <h3>成长芽芽</h3>
+  <p class="concept">发芽的种子形态，代表每个人内在的潜力和成长空间，充满生命力</p>
+  <span class="tag">成长感</span>
+</div>
+
+<!-- 方案4: 指南针宝 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <path d="M25,75 Q20,50 35,35 Q50,20 75,22 Q100,24 108,50 Q115,75 100,92 Q85,108 55,105 Q30,102 25,75Z" fill="#7EC8E3" opacity="0.15"/>
+      <path d="M22,72 Q17,47 32,32 Q47,17 72,19 Q97,21 105,47 Q112,72 97,89 Q82,105 52,102 Q27,99 22,72Z" fill="#7EC8E3"/>
+      <!-- 眼睛 -->
+      <circle cx="48" cy="52" r="4" fill="#fff"/>
+      <circle cx="72" cy="52" r="4" fill="#fff"/>
+      <circle cx="48" cy="52" r="2" fill="#2D2B3D"/>
+      <circle cx="72" cy="52" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M52,64 Q60,70 68,64" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 方向标 -->
+      <polygon points="60,35 64,45 60,43 56,45" fill="#fff" opacity="0.5"/>
+      <polygon points="60,85 64,75 60,77 56,75" fill="#fff" opacity="0.3"/>
+      <polygon points="35,60 45,56 43,60 45,64" fill="#fff" opacity="0.3"/>
+      <polygon points="85,60 75,56 77,60 75,64" fill="#fff" opacity="0.3"/>
+    </svg>
+  </div>
+  <h3>指南针宝</h3>
+  <p class="concept">圆角方形带方向纹理，代表AI为你指引方向，不替你做选择但照亮前路</p>
+  <span class="tag blue">方向感</span>
+</div>
+
+<!-- 方案5: 共鸣心球 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <path d="M30,55 Q25,35 45,25 Q60,18 75,28 Q90,18 100,35 Q108,52 95,70 Q80,90 60,100 Q40,90 25,70 Q18,55 30,55Z" fill="#FF7EB3" opacity="0.15" transform="translate(0,5)"/>
+      <path d="M28,52 Q23,32 43,22 Q58,15 73,25 Q88,15 98,32 Q106,49 93,67 Q78,87 58,97 Q38,87 23,67 Q16,52 28,52Z" fill="#FF7EB3"/>
+      <!-- 眼睛 -->
+      <circle cx="50" cy="48" r="4" fill="#fff"/>
+      <circle cx="70" cy="48" r="4" fill="#fff"/>
+      <circle cx="50" cy="48" r="2" fill="#2D2B3D"/>
+      <circle cx="70" cy="48" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M54,58 Q60,64 66,58" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 小爱心 -->
+      <path d="M88,30 Q85,26 88,23 Q91,20 94,23 Q97,26 94,30 Q91,34 88,30Z" fill="#FFB3D1" opacity="0.5"/>
+    </svg>
+  </div>
+  <h3>共鸣心球</h3>
+  <p class="concept">心形blob，代表情绪共鸣是产品的核心，先懂你的感受再谈规划</p>
+  <span class="tag pink">情绪感</span>
+</div>
+
+<!-- 方案6: 钥匙精灵 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <path d="M30,80 Q22,60 35,42 Q48,24 72,26 Q96,28 104,50 Q112,72 98,90 Q84,108 55,104 Q30,100 30,80Z" fill="#B388FF" opacity="0.15"/>
+      <path d="M27,77 Q19,57 32,39 Q45,21 69,23 Q93,25 101,47 Q109,69 95,87 Q81,105 52,101 Q27,97 27,77Z" fill="#B388FF"/>
+      <!-- 眼睛 -->
+      <circle cx="50" cy="52" r="4" fill="#fff"/>
+      <circle cx="72" cy="52" r="4" fill="#fff"/>
+      <circle cx="50" cy="52" r="2" fill="#2D2B3D"/>
+      <circle cx="72" cy="52" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M54,64 Q60,70 68,64" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 小钥匙 -->
+      <circle cx="90" cy="35" r="5" fill="#FFD93D" opacity="0.6"/>
+      <rect x="88" y="38" width="4" height="10" rx="1" fill="#FFD93D" opacity="0.5"/>
+      <rect x="86" y="42" width="8" height="3" rx="1" fill="#FFD93D" opacity="0.5"/>
+    </svg>
+  </div>
+  <h3>钥匙精灵</h3>
+  <p class="concept">圆角椭圆带钥匙装饰，代表AI帮你解锁未来的各种可能性</p>
+  <span class="tag">解锁感</span>
+</div>
+
+<!-- 方案7: 星辰向导 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <path d="M40,95 Q30,75 35,55 Q38,35 55,30 Q72,25 88,38 Q104,51 100,72 Q96,93 75,98 Q54,103 40,95Z" fill="#B388FF" opacity="0.15"/>
+      <path d="M37,92 Q27,72 32,52 Q35,32 52,27 Q69,22 85,35 Q101,48 97,69 Q93,90 72,95 Q51,100 37,92Z" fill="#B388FF"/>
+      <!-- 眼睛 -->
+      <circle cx="52" cy="55" r="4" fill="#fff"/>
+      <circle cx="74" cy="55" r="4" fill="#fff"/>
+      <circle cx="52" cy="55" r="2" fill="#2D2B3D"/>
+      <circle cx="74" cy="55" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M56,67 Q62,73 70,67" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 星星角 -->
+      <path d="M60,18 L63,26 L72,27 L65,33 L67,42 L60,37 L53,42 L55,33 L48,27 L57,26Z" fill="#FFD93D" opacity="0.5"/>
+    </svg>
+  </div>
+  <h3>星辰向导</h3>
+  <p class="concept">星星形状的blob带光芒，代表目标感和方向感，像夜空中最亮的那颗星</p>
+  <span class="tag">目标感</span>
+</div>
+
+<!-- 方案8: 智慧光球 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <circle cx="60" cy="63" r="42" fill="#B388FF" opacity="0.1"/>
+      <circle cx="60" cy="60" r="40" fill="url(#grad8)"/>
+      <defs>
+        <linearGradient id="grad8" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#B388FF"/>
+          <stop offset="100%" stop-color="#FF7EB3"/>
+        </linearGradient>
+      </defs>
+      <!-- 高光 -->
+      <ellipse cx="45" cy="45" rx="12" ry="7" fill="#fff" opacity="0.25" transform="rotate(-30 45 45)"/>
+      <!-- 眼睛 -->
+      <circle cx="48" cy="55" r="4.5" fill="#fff"/>
+      <circle cx="72" cy="55" r="4.5" fill="#fff"/>
+      <circle cx="48" cy="55" r="2.5" fill="#2D2B3D"/>
+      <circle cx="72" cy="55" r="2.5" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M53,68 Q60,75 67,68" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 光点 -->
+      <circle cx="25" cy="50" r="2" fill="#FFD93D" opacity="0.5"/>
+      <circle cx="95" cy="45" r="1.5" fill="#FFD93D" opacity="0.4"/>
+      <circle cx="30" cy="80" r="1.5" fill="#FFD93D" opacity="0.3"/>
+    </svg>
+  </div>
+  <h3>智慧光球</h3>
+  <p class="concept">粉紫渐变发光球体，代表AI的智慧核心，温暖而不冰冷</p>
+  <span class="tag pink">AI感</span>
+</div>
+
+<!-- 方案9: 阶梯团子 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <path d="M32,88 Q24,68 36,50 Q46,30 70,32 Q94,34 102,56 Q110,78 96,94 Q82,110 55,106 Q30,102 32,88Z" fill="#FFB347" opacity="0.15"/>
+      <path d="M29,85 Q21,65 33,47 Q43,27 67,29 Q91,31 99,53 Q107,75 93,91 Q79,107 52,103 Q27,99 29,85Z" fill="#FFB347"/>
+      <!-- 眼睛 -->
+      <circle cx="50" cy="55" r="4" fill="#fff"/>
+      <circle cx="74" cy="55" r="4" fill="#fff"/>
+      <circle cx="50" cy="55" r="2" fill="#2D2B3D"/>
+      <circle cx="74" cy="55" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M54,66 Q60,72 70,66" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 阶梯 -->
+      <rect x="28" y="78" width="12" height="3" rx="1.5" fill="#fff" opacity="0.3"/>
+      <rect x="28" y="72" width="8" height="3" rx="1.5" fill="#fff" opacity="0.25"/>
+      <rect x="28" y="66" width="5" height="3" rx="1.5" fill="#fff" opacity="0.2"/>
+    </svg>
+  </div>
+  <h3>阶梯团子</h3>
+  <p class="concept">圆角blob带阶梯纹理，代表每一步都算数，向上成长的过程</p>
+  <span class="tag orange">进步感</span>
+</div>
+
+<!-- 方案10: 地图豆豆 -->
+<div class="card" onclick="selectCard(this)">
+  <div class="selected-badge">&#10003;</div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 120 120" width="120" height="120">
+      <path d="M35,82 Q28,62 40,44 Q52,24 76,26 Q100,28 106,52 Q112,76 98,92 Q84,108 55,104 Q30,100 35,82Z" fill="#B388FF" opacity="0.15"/>
+      <path d="M32,79 Q25,59 37,41 Q49,21 73,23 Q97,25 103,49 Q109,73 95,89 Q81,105 52,101 Q27,97 32,79Z" fill="#B388FF"/>
+      <!-- 眼睛 -->
+      <circle cx="50" cy="52" r="4" fill="#fff"/>
+      <circle cx="74" cy="52" r="4" fill="#fff"/>
+      <circle cx="50" cy="52" r="2" fill="#2D2B3D"/>
+      <circle cx="74" cy="52" r="2" fill="#2D2B3D"/>
+      <!-- 微笑 -->
+      <path d="M54,64 Q60,70 70,64" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 路线 -->
+      <path d="M30,70 Q45,68 55,75 Q65,82 75,78 Q85,74 95,80" fill="none" stroke="#FFD93D" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+      <circle cx="55" cy="75" r="2.5" fill="#FFD93D" opacity="0.5"/>
+      <circle cx="75" cy="78" r="2.5" fill="#FFD93D" opacity="0.5"/>
+    </svg>
+  </div>
+  <h3>地图豆豆</h3>
+  <p class="concept">圆角形状带地图路线纹理，代表AI为你绘制人生地图，标出关键节点</p>
+  <span class="tag">探索感</span>
+</div>
+
+</div>
+
+<div class="note">
+  <p><strong>设计说明</strong>：10组方案均参考 Finch / BuddyAI 的有机blob设计语言，采用圆角不规则形状+极简表情（两点眼+微笑）。融入Traction品牌色（粉紫系为主，辅以蓝绿橙），每个形象都有与产品定位相关的独特纹理或装饰元素。点击卡片可选中，选中后可替换所有页面的emoji。</p>
+</div>
+
+<script>
+function selectCard(el) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>
+
+</body>
+</html>

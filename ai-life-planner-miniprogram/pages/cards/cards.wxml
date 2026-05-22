@@ -1,0 +1,32 @@
+<!--pages/cards/cards.wxml-->
+<view class="cards-container">
+  <view class="header">
+    <text class="title">你的未来规划情绪卡</text>
+    <text class="desc">选择一张分享到朋友圈</text>
+  </view>
+
+  <view class="cards-list">
+    <view wx:for="{{cards}}" wx:key="id" class="card-item" bindtap="selectCard" data-id="{{item.id}}">
+      <view class="chibi-illustration" style="background-image: url({{item.imageUrl}})"></view>
+      
+      <view class="metrics">
+        <view class="metric risk">
+          <text class="metric-title">风险点 ({{item.riskScore}}/100)</text>
+          <text class="metric-desc">{{item.riskDesc}}</text>
+        </view>
+        <view class="metric execution">
+          <text class="metric-title">执行点 ({{item.executionScore}}/100)</text>
+          <text class="metric-desc">{{item.executionDesc}}</text>
+        </view>
+        <view class="metric benefit">
+          <text class="metric-title">收益点 ({{item.benefitScore}}/100)</text>
+          <text class="metric-desc">{{item.benefitDesc}}</text>
+        </view>
+      </view>
+      
+      <view class="card-footer">
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+</view>

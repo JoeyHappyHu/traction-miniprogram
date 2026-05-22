@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>共鸣星球 - 定稿参考</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: #FFF8F0;
+  padding: 40px 20px;
+  color: #2D2B3D;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #B388FF, #FF7EB3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.header p {
+  font-size: 14px;
+  color: #8B86A3;
+}
+.comparison {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  margin-bottom: 60px;
+}
+.mascot-box {
+  text-align: center;
+}
+.mascot-box .label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #4A4766;
+}
+.mascot-box .label span {
+  font-size: 13px;
+  font-weight: 400;
+  color: #8B86A3;
+  display: block;
+  margin-top: 4px;
+}
+.mascot-box .svg-wrap {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+.note {
+  text-align: center;
+  padding: 20px 30px;
+  background: #F3E8FF;
+  border-radius: 16px;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+.note p {
+  font-size: 13px;
+  color: #4A4766;
+  line-height: 1.8;
+}
+.app-preview {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.app-box {
+  text-align: center;
+}
+.app-box .label {
+  font-size: 13px;
+  color: #8B86A3;
+  margin-bottom: 12px;
+}
+.login-mockup {
+  width: 280px;
+  height: 500px;
+  background: linear-gradient(180deg, #F3E8FF 0%, #FFF0F5 40%, #FFF8F0 100%);
+  border-radius: 32px;
+  box-shadow: 0 10px 40px rgba(179,136,255,0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+.login-mockup h2 {
+  font-size: 28px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #B388FF, #FF7EB3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 20px;
+  letter-spacing: 2px;
+}
+.login-mockup p {
+  font-size: 12px;
+  color: #8B86A3;
+  margin-top: 6px;
+  letter-spacing: 3px;
+}
+.login-mockup .btn {
+  margin-top: auto;
+  margin-bottom: 60px;
+  width: 85%;
+  padding: 14px;
+  border-radius: 50px;
+  border: none;
+  background: #07C160;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(7,193,96,0.3);
+}
+.chat-mockup {
+  width: 280px;
+  height: 500px;
+  background: var(--cream);
+  border-radius: 32px;
+  box-shadow: 0 10px 40px rgba(179,136,255,0.12);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.chat-mockup .msg-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.chat-mockup .msg-row.ai {
+  align-self: flex-start;
+}
+.chat-mockup .msg-row.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+.chat-mockup .msg-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.chat-mockup .msg-bubble {
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 180px;
+}
+.chat-mockup .ai .msg-bubble {
+  background: #fff;
+  color: #2D2B3D;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(179,136,255,0.08);
+}
+.chat-mockup .user .msg-bubble {
+  background: linear-gradient(135deg, #B388FF, #FF7EB3);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>共鸣星球 - 定稿参考</h1>
+  <p>去掉嘴巴 | 去掉眼白 | 放大眼黑</p>
+</div>
+
+<div class="comparison">
+  <div class="mascot-box">
+    <div class="label">大尺寸展示<span>用于登录页mascot</span></div>
+    <div class="svg-wrap">
+      <svg viewBox="0 0 200 200" width="200" height="200">
+        <path d="M45,110 Q32,78 60,50 Q80,28 110,32 Q140,28 162,52 Q180,76 172,108 Q164,140 138,160 Q112,180 82,172 Q52,164 45,110Z" fill="#FF7EB3" opacity="0.12"/>
+        <path d="M42,106 Q29,74 57,46 Q77,24 107,28 Q137,24 159,48 Q177,72 169,104 Q161,136 135,156 Q109,176 79,168 Q49,160 42,106Z" fill="#FF7EB3"/>
+        <ellipse cx="72" cy="72" rx="18" ry="10" fill="#fff" opacity="0.2" transform="rotate(-25 72 72)"/>
+        <circle cx="82" cy="90" r="6" fill="#2D2B3D"/>
+        <circle cx="118" cy="90" r="6" fill="#2D2B3D"/>
+        <circle cx="83" cy="88" r="2" fill="#fff" opacity="0.6"/>
+        <circle cx="119" cy="88" r="2" fill="#fff" opacity="0.6"/>
+        <path d="M160,48 Q155,40 160,35 Q165,30 170,35 Q175,40 170,48 Q167,54 160,48Z" fill="#FFB3D1" opacity="0.4"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="mascot-box">
+    <div class="label">小尺寸展示<span>用于对话头像/图标</span></div>
+    <div class="svg-wrap" style="display:flex;gap:20px;align-items:end;">
+      <div style="text-align:center;">
+        <svg viewBox="0 0 60 60" width="60" height="60">
+          <path d="M10,35 Q6,22 18,14 Q26,7 36,10 Q46,7 52,16 Q58,25 55,36 Q52,47 44,52 Q36,57 25,54 Q14,51 10,35Z" fill="#FF7EB3"/>
+          <circle cx="24" cy="28" r="2.5" fill="#2D2B3D"/>
+          <circle cx="36" cy="28" r="2.5" fill="#2D2B3D"/>
+          <circle cx="24.5" cy="27" r="0.8" fill="#fff" opacity="0.6"/>
+          <circle cx="36.5" cy="27" r="0.8" fill="#fff" opacity="0.6"/>
+        </svg>
+        <div style="font-size:11px;color:#8B86A3;margin-top:6px;">60px</div>
+      </div>
+      <div style="text-align:center;">
+        <svg viewBox="0 0 40 40" width="40" height="40">
+          <path d="M7,23 Q5,15 12,10 Q17,6 24,8 Q31,6 35,11 Q38,16 37,23 Q36,30 30,34 Q24,38 18,36 Q12,34 7,23Z" fill="#FF7EB3"/>
+          <circle cx="16" cy="19" r="1.8" fill="#2D2B3D"/>
+          <circle cx="24" cy="19" r="1.8" fill="#2D2B3D"/>
+          <circle cx="16.3" cy="18.5" r="0.6" fill="#fff" opacity="0.6"/>
+          <circle cx="24.3" cy="18.5" r="0.6" fill="#fff" opacity="0.6"/>
+        </svg>
+        <div style="font-size:11px;color:#8B86A3;margin-top:6px;">40px</div>
+      </div>
+      <div style="text-align:center;">
+        <svg viewBox="0 0 28 28" width="28" height="28">
+          <path d="M5,16 Q4,10 8,7 Q12,4 17,5 Q22,4 24,8 Q26,12 25,16 Q24,21 21,24 Q18,27 14,25 Q10,24 5,16Z" fill="#FF7EB3"/>
+          <circle cx="11" cy="13" r="1.2" fill="#2D2B3D"/>
+          <circle cx="17" cy="13" r="1.2" fill="#2D2B3D"/>
+        </svg>
+        <div style="font-size:11px;color:#8B86A3;margin-top:6px;">28px</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="note">
+  <p><strong>改动说明</strong>：基于"共鸣心球"方案调整 — 去掉嘴巴使形象更中性、更具AI感；去掉眼白只保留深色眼珠使风格更接近 Finch/BuddyAI 的简约语言；眼黑从r=2放大到r=6，每个眼黑保留一个微小高光点增加灵动感。</p>
+</div>
+
+<div class="app-preview">
+  <div class="app-box">
+    <div class="label">登录页效果</div>
+    <div class="login-mockup">
+      <svg viewBox="0 0 100 100" width="100" height="100">
+        <path d="M20,55 Q14,35 30,22 Q42,12 58,14 Q74,12 82,28 Q90,42 86,58 Q82,72 68,78 Q54,84 38,80 Q22,76 20,55Z" fill="#FF7EB3"/>
+        <circle cx="41" cy="46" r="3.5" fill="#2D2B3D"/>
+        <circle cx="59" cy="46" r="3.5" fill="#2D2B3D"/>
+        <circle cx="41.5" cy="45" r="1.2" fill="#fff" opacity="0.6"/>
+        <circle cx="59.5" cy="45" r="1.2" fill="#fff" opacity="0.6"/>
+        <ellipse cx="55" cy="36" rx="10" ry="6" fill="#fff" opacity="0.2" transform="rotate(-25 55 36)"/>
+      </svg>
+      <h2>Traction</h2>
+      <p>你的未来预演卡牌</p>
+      <button class="btn">微信一键登录</button>
+    </div>
+  </div>
+
+  <div class="app-box">
+    <div class="label">对话页效果</div>
+    <div class="chat-mockup">
+      <div class="msg-row ai">
+        <div class="msg-avatar">
+          <svg viewBox="0 0 32 32" width="32" height="32">
+            <path d="M5,19 Q4,12 10,7 Q15,3 21,5 Q27,3 29,9 Q31,15 28,20 Q25,26 19,27 Q13,28 7,24 Q4,22 5,19Z" fill="#FF7EB3"/>
+            <circle cx="13" cy="14" r="1.5" fill="#2D2B3D"/>
+            <circle cx="20" cy="14" r="1.5" fill="#2D2B3D"/>
+          </svg>
+        </div>
+        <div class="msg-bubble">现在聊聊你的想法吧</div>
+      </div>
+      <div class="msg-row user">
+        <div class="msg-bubble">我想了解出国读研</div>
+      </div>
+      <div class="msg-row ai">
+        <div class="msg-avatar">
+          <svg viewBox="0 0 32 32" width="32" height="32">
+            <path d="M5,19 Q4,12 10,7 Q15,3 21,5 Q27,3 29,9 Q31,15 28,20 Q25,26 19,27 Q13,28 7,24 Q4,22 5,19Z" fill="#FF7EB3"/>
+            <circle cx="13" cy="14" r="1.5" fill="#2D2B3D"/>
+            <circle cx="20" cy="14" r="1.5" fill="#2D2B3D"/>
+          </svg>
+        </div>
+        <div class="msg-bubble">为什么想出国呢</div>
+      </div>
+      <div class="msg-row user">
+        <div class="msg-bubble">感觉国内太卷了</div>
+      </div>
+      <div class="msg-row ai">
+        <div class="msg-avatar">
+          <svg viewBox="0 0 32 32" width="32" height="32">
+            <path d="M5,19 Q4,12 10,7 Q15,3 21,5 Q27,3 29,9 Q31,15 28,20 Q25,26 19,27 Q13,28 7,24 Q4,22 5,19Z" fill="#FF7EB3"/>
+            <circle cx="13" cy="14" r="1.5" fill="#2D2B3D"/>
+            <circle cx="20" cy="14" r="1.5" fill="#2D2B3D"/>
+          </svg>
+        </div>
+        <div class="msg-bubble">嗯 说具体一点</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "ai-chat",
+  "version": "1.0.0",
+  "description": "AI chat cloud function with LLM integration",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.0"
+  }
+}

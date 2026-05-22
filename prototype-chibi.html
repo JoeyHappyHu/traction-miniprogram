@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Traction 智导 - Chibi风交互原型</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --pink: #FF7EB3;
+  --pink-light: #FFB3D1;
+  --pink-bg: #FFF0F5;
+  --purple: #B388FF;
+  --purple-light: #D4BFFF;
+  --purple-bg: #F3E8FF;
+  --blue: #7EC8E3;
+  --blue-light: #B3E0F2;
+  --blue-bg: #E8F7FC;
+  --yellow: #FFD93D;
+  --yellow-light: #FFE98A;
+  --green: #6BCB77;
+  --green-light: #A5E6AF;
+  --orange: #FFB347;
+  --orange-light: #FFD499;
+  --cream: #FFF8F0;
+  --warm-gray: #F5F0EB;
+  --dark: #2D2B3D;
+  --dark-soft: #4A4766;
+  --mid: #8B86A3;
+  --light: #C5C1D4;
+  --white: #FFFFFF;
+  --shadow-soft: 0 8px 32px rgba(179, 136, 255, 0.15);
+  --shadow-card: 0 4px 20px rgba(179, 136, 255, 0.12);
+  --shadow-btn: 0 4px 16px rgba(255, 126, 179, 0.3);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #1a1825;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.phone-frame {
+  width: 375px;
+  height: 812px;
+  background: var(--cream);
+  border-radius: 44px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.4), inset 0 0 0 2px rgba(255,255,255,0.1);
+}
+
+.status-bar {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 28px;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  z-index: 10;
+}
+.status-bar.light { color: var(--dark); }
+.status-bar.dark { color: var(--white); }
+.status-icons { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+
+/* ===== Screen Container ===== */
+.screen {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform: translateX(30px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.screen::-webkit-scrollbar { display: none; }
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* ===== LOGIN SCREEN ===== */
+.login-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #F3E8FF 0%, #FFF0F5 40%, #FFF8F0 100%);
+}
+
+.login-mascot {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mascot-face {
+  width: 110px;
+  height: 110px;
+}
+.login-brand {
+  margin-top: 16px;
+  text-align: center;
+}
+.login-brand h1 {
+  font-size: 32px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+}
+.login-brand p {
+  font-size: 13px;
+  color: var(--mid);
+  margin-top: 4px;
+  letter-spacing: 3px;
+}
+
+.login-actions {
+  margin-top: 32px;
+  padding: 0 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-wechat-login {
+  width: 100%;
+  padding: 14px;
+  border-radius: 50px;
+  border: none;
+  background: #07C160;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(7, 193, 96, 0.35);
+  font-family: inherit;
+}
+.btn-wechat-login:active { transform: scale(0.97); opacity: 0.9; }
+.btn-wechat-login svg { width: 22px; height: 22px; }
+
+.login-hint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--light);
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+/* ===== WECHAT AUTH POPUP ===== */
+.auth-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #1a1a1a;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  color: #fff;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.auth-overlay.active { display: flex; }
+
+.auth-close {
+  padding: 16px 20px;
+  font-size: 16px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.auth-app-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px 24px;
+}
+.auth-app-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.auth-app-name {
+  font-size: 16px;
+  color: #fff;
+}
+.auth-app-action {
+  font-size: 13px;
+  color: #888;
+}
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 600;
+  padding: 0 24px 8px;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: #888;
+  padding: 0 24px 32px;
+}
+
+.auth-profile-list {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.auth-profile-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 0.5px solid #333;
+  cursor: pointer;
+}
+.auth-profile-item:last-child { border-bottom: none; }
+
+.auth-profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #333;
+}
+
+.auth-profile-info { flex: 1; }
+.auth-profile-name {
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.auth-profile-tag {
+  font-size: 13px;
+  color: #888;
+}
+
+.auth-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #07C160;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #07C160;
+  font-size: 14px;
+}
+
+.auth-new-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+  cursor: pointer;
+}
+.auth-new-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #888;
+}
+
+.auth-buttons {
+  margin-top: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-btn-allow {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #07C160;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+.auth-btn-allow:active { opacity: 0.85; }
+
+.auth-btn-deny {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #2a2a2a;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+.auth-btn-deny:active { opacity: 0.85; }
+
+/* ===== HOME SCREEN ===== */
+.home-screen {
+  background: var(--cream);
+  padding-bottom: 90px;
+}
+
+.home-header {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.home-greeting { font-size: 13px; color: var(--mid); }
+.home-name { font-size: 20px; font-weight: 700; color: var(--dark); margin-top: 2px; }
+.home-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FF7EB3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(255, 126, 179, 0.2);
+}
+
+.hero-card {
+  margin: 0 20px 20px;
+  padding: 28px 24px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.hero-card:active { transform: scale(0.98); }
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 140px;
+  height: 140px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+}
+.hero-card::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+.hero-emoji { font-size: 40px; margin-bottom: 12px; }
+.hero-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.hero-desc { font-size: 13px; opacity: 0.85; line-height: 1.6; }
+.hero-arrow {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.home-section-title {
+  padding: 16px 24px 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-list { padding: 0 20px; }
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.task-item:active { transform: scale(0.98); opacity: 0.9; }
+.task-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.task-info { flex: 1; min-width: 0; }
+.task-title { font-size: 15px; font-weight: 600; color: var(--dark); }
+.task-meta { font-size: 12px; color: var(--mid); margin-top: 2px; }
+.task-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.task-badge.done { background: var(--green-light); color: var(--green); }
+.task-badge.chat { background: var(--blue-light); color: var(--blue); }
+
+/* ===== TAB BAR ===== */
+.tab-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 84px;
+  background: var(--white);
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  z-index: 20;
+}
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 16px;
+  transition: all 0.2s;
+}
+.tab-item .tab-icon { font-size: 24px; opacity: 0.4; transition: all 0.2s; }
+.tab-item .tab-label { font-size: 10px; color: var(--mid); font-weight: 500; transition: all 0.2s; }
+.tab-item.active .tab-icon { opacity: 1; transform: scale(1.1); }
+.tab-item.active .tab-label { color: var(--purple); font-weight: 700; }
+
+/* ===== CHAT SCREEN ===== */
+.chat-screen {
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  flex-shrink: 0;
+}
+.chat-back {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--warm-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+.chat-back:active { transform: scale(0.9); }
+.chat-title-area { flex: 1; }
+.chat-title { font-size: 16px; font-weight: 700; color: var(--dark); }
+.chat-subtitle { font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 4px; }
+.chat-subtitle::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 20px 16px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.msg {
+  max-width: 82%;
+  display: flex;
+  gap: 8px;
+  animation: msgIn 0.3s ease;
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.msg.ai { align-self: flex-start; }
+.msg.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.msg-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.msg.ai .msg-avatar {
+  background: #FF7EB3;
+}
+.msg.user .msg-avatar {
+  background: var(--blue-light);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.msg-bubble {
+  padding: 12px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.msg.ai .msg-bubble {
+  background: var(--white);
+  color: var(--dark);
+  border-bottom-left-radius: 6px;
+  box-shadow: var(--shadow-card);
+}
+.msg.user .msg-bubble {
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white;
+  border-bottom-right-radius: 6px;
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 4px 0;
+}
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--light);
+  border-radius: 50%;
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-8px); opacity: 1; }
+}
+
+.chat-input-area {
+  padding: 12px 16px 30px;
+  background: var(--white);
+  border-top: 1px solid rgba(0,0,0,0.05);
+  flex-shrink: 0;
+}
+.chat-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.chat-input {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 24px;
+  border: 2px solid var(--warm-gray);
+  background: var(--cream);
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.chat-input:focus { border-color: var(--purple-light); }
+.chat-send {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-btn);
+}
+.chat-send:active { transform: scale(0.9); }
+
+.btn-generate-card {
+  margin: 12px 16px 20px;
+  padding: 16px;
+  border-radius: 50px;
+  border: none;
+  background: linear-gradient(135deg, var(--yellow), var(--orange));
+  color: var(--dark);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(255, 179, 71, 0.4);
+  font-family: inherit;
+  transition: all 0.3s;
+  animation: cardBtnPulse 2s ease-in-out infinite;
+}
+.btn-generate-card:active { transform: scale(0.97); }
+@keyframes cardBtnPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(255, 179, 71, 0.4); }
+  50% { box-shadow: 0 4px 30px rgba(255, 179, 71, 0.6); }
+}
+
+/* ===== CARD SCREEN ===== */
+.card-screen {
+  background: linear-gradient(180deg, var(--purple-bg), var(--pink-bg), var(--cream));
+}
+
+.card-header {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.card-back {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s;
+}
+.card-back:active { transform: scale(0.9); }
+.card-header-title { font-size: 16px; font-weight: 700; color: var(--dark); }
+
+.card-container {
+  padding: 0 16px;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 100px;
+}
+
+.path-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(179, 136, 255, 0.2);
+  animation: cardReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes cardReveal {
+  from { opacity: 0; transform: scale(0.8) rotateY(15deg); }
+  to { opacity: 1; transform: scale(1) rotateY(0); }
+}
+
+.card-illustration {
+  height: 200px;
+  background: linear-gradient(135deg, var(--purple-bg), var(--pink-bg));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.card-illust-scene {
+  font-size: 80px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+  z-index: 1;
+}
+.card-illust-bg1 {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 60px;
+  opacity: 0.3;
+  animation: floatSlow 6s ease-in-out infinite;
+}
+.card-illust-bg2 {
+  position: absolute;
+  bottom: -10px;
+  left: -10px;
+  font-size: 40px;
+  opacity: 0.25;
+  animation: floatSlow 8s ease-in-out infinite reverse;
+}
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+.card-illust-label {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--purple);
+  backdrop-filter: blur(8px);
+}
+
+.card-path-name {
+  padding: 20px 24px 12px;
+  text-align: center;
+}
+.card-path-name h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--dark);
+}
+.card-path-tagline {
+  font-size: 12px;
+  color: var(--mid);
+  margin-top: 4px;
+}
+
+/* Dimension layers */
+.dim-layer-section {
+  padding: 8px 20px;
+}
+.dim-layer-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--mid);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.dim-layer-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--light), transparent);
+}
+
+.dim-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--cream);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+  transition: all 0.2s;
+}
+.dim-item:active { transform: scale(0.98); }
+.dim-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.dim-content { flex: 1; min-width: 0; }
+.dim-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.dim-name { font-size: 13px; font-weight: 700; color: var(--dark); }
+.dim-score {
+  font-size: 16px;
+  font-weight: 900;
+  min-width: 32px;
+  text-align: right;
+}
+.dim-bar-wrap {
+  height: 8px;
+  background: var(--warm-gray);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.dim-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+.dim-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+  animation: shimmer 2s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.dim-desc {
+  font-size: 12px;
+  color: var(--dark-soft);
+  line-height: 1.6;
+}
+
+.card-summary {
+  margin: 12px 20px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--purple-bg), var(--pink-bg));
+  border-radius: var(--radius-md);
+  text-align: center;
+  position: relative;
+}
+.card-summary-emoji { font-size: 20px; margin-bottom: 6px; }
+.card-summary-text {
+  font-size: 14px;
+  color: var(--dark);
+  font-weight: 600;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.card-nav-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 0 8px;
+}
+.card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--light);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.card-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--purple), var(--pink));
+}
+
+.card-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 20px 34px;
+  display: flex;
+  gap: 12px;
+  background: linear-gradient(transparent, var(--cream) 20%);
+  z-index: 10;
+}
+.card-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 50px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.card-btn:active { transform: scale(0.97); }
+.card-btn-switch {
+  background: var(--white);
+  color: var(--purple);
+  box-shadow: var(--shadow-card);
+  border: 2px solid var(--purple-light);
+}
+.card-btn-save {
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white;
+  box-shadow: var(--shadow-btn);
+}
+.card-btn-switch:disabled, .card-btn-save:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ===== HISTORY SCREEN ===== */
+.history-screen {
+  background: var(--cream);
+  padding: 0 20px 100px;
+}
+
+.history-header {
+  padding: 20px 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.history-title { font-size: 22px; font-weight: 800; color: var(--dark); }
+.history-count { font-size: 13px; color: var(--mid); }
+
+.history-item {
+  display: flex;
+  gap: 14px;
+  padding: 18px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.history-item:active { transform: scale(0.98); }
+.history-emoji {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+.history-info { flex: 1; min-width: 0; }
+.history-name { font-size: 15px; font-weight: 700; color: var(--dark); }
+.history-desc { font-size: 12px; color: var(--mid); margin-top: 4px; line-height: 1.5; }
+.history-bottom { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+.history-date { font-size: 11px; color: var(--light); }
+.history-cards-count {
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--pink-bg);
+  color: var(--pink);
+  font-size: 11px;
+  font-weight: 600;
+}
+.history-delete {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
+}
+.history-item:hover .history-delete { opacity: 1; }
+
+/* ===== TRANSITION OVERLAY ===== */
+.transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.transition-overlay.active { opacity: 1; pointer-events: auto; }
+.transition-emoji { font-size: 64px; animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.transition-text { font-size: 16px; font-weight: 600; color: white; margin-top: 16px; }
+@keyframes bounceIn {
+  from { transform: scale(0) rotate(-10deg); opacity: 0; }
+  to { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* ===== SCREEN NAV LABELS ===== */
+.screen-labels {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 100;
+  pointer-events: none;
+}
+.screen-label {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(8px);
+  font-family: 'Noto Sans SC', sans-serif;
+  border: 1px solid rgba(255,255,255,0.1);
+  pointer-events: auto;
+}
+.screen-label.active {
+  background: rgba(179, 136, 255, 0.3);
+  color: white;
+  border-color: rgba(179, 136, 255, 0.5);
+}
+.screen-label:hover {
+  background: rgba(179, 136, 255, 0.2);
+  color: white;
+}
+
+/* ===== PAGE TITLE ===== */
+.page-title-bar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  text-align: center;
+}
+.page-title {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 420px) {
+  .phone-frame { width: 100%; height: 100vh; border-radius: 0; }
+  .screen-labels { display: none; }
+  body { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-title-bar">
+  <div class="page-title">TRACTION PROTOTYPE · CHIBI STYLE</div>
+</div>
+
+<div class="screen-labels" id="screenLabels">
+  <div class="screen-label active" data-screen="login" onclick="navTo('login')">登录</div>
+  <div class="screen-label" data-screen="home" onclick="navTo('home')">首页</div>
+  <div class="screen-label" data-screen="chat" onclick="navTo('chat')">对话</div>
+  <div class="screen-label" data-screen="card" onclick="navTo('card')">卡牌</div>
+  <div class="screen-label" data-screen="history" onclick="navTo('history')">历史</div>
+</div>
+
+<div class="phone-frame" id="phone">
+  <!-- Status Bar -->
+  <div class="status-bar light" id="statusBar" style="display:none;"></div>
+
+  <!-- ===== SCREEN: LOGIN ===== -->
+  <div class="screen login-screen active" id="screen-login">
+    <div class="login-mascot">
+      <div class="mascot-face">
+        <svg viewBox="0 0 100 100" width="120" height="120">
+          <path d="M15,28 Q12,14 28,8 Q40,4 50,12 Q60,4 72,10 Q82,18 78,32 Q72,46 58,54 Q44,62 28,54 Q14,46 15,28Z" fill="#FF7EB3"/>
+          <circle cx="38" cy="28" r="5" fill="#2D2B3D"/>
+          <circle cx="58" cy="28" r="5" fill="#2D2B3D"/>
+        </svg>
+      </div>
+    </div>
+    <div class="login-brand">
+      <h1>Traction</h1>
+      <p>你的未来预演卡牌</p>
+    </div>
+    <div class="login-actions">
+      <button class="btn-wechat-login" onclick="showAuth()">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm3.844 4.147c-1.677-.07-3.472.467-4.86 1.654-1.476 1.264-2.333 3.227-1.688 5.372.644 2.145 2.628 3.468 4.676 3.468.593 0 1.175-.1 1.725-.3a.528.528 0 0 1 .438.06l1.161.679a.199.199 0 0 0 .102.033c.1 0 .178-.08.178-.18 0-.044-.018-.087-.03-.13l-.238-.903a.36.36 0 0 1 .13-.405C20.042 17.13 21.14 15.35 21.14 13.378c0-2.39-2.108-3.193-5.698-3.24zm-1.956 2.372c.46 0 .833.379.833.846a.84.84 0 0 1-.833.845.84.84 0 0 1-.832-.845c0-.467.372-.846.832-.846zm4.167 0c.46 0 .833.379.833.846a.84.84 0 0 1-.833.845.84.84 0 0 1-.833-.845c0-.467.373-.846.833-.846z"/></svg>
+        微信一键登录
+      </button>
+    </div>
+    <div class="login-hint">
+      登录即绑定微信，保存你的卡牌收藏
+    </div>
+  </div>
+
+  <!-- ===== WECHAT AUTH POPUP ===== -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-close" onclick="closeAuth()">关闭</div>
+    <div class="auth-app-info">
+      <svg class="auth-app-icon" viewBox="0 0 32 32" width="36" height="36" style="border-radius:8px;"><path d="M5,11 Q3,5 10,2 Q15,0 20,4 Q25,0 29,5 Q31,10 27,16 Q23,22 16,24 Q9,22 5,16 Q3,11 5,11Z" fill="#FF7EB3"/><circle cx="12" cy="11" r="2.5" fill="#2D2B3D"/><circle cx="20" cy="11" r="2.5" fill="#2D2B3D"/></svg>
+      <div>
+        <div class="auth-app-name">Traction</div>
+        <div class="auth-app-action">申请使用</div>
+      </div>
+    </div>
+    <div class="auth-title">你的昵称、头像</div>
+    <div class="auth-subtitle">你可以选择不同的昵称、头像登录</div>
+
+    <div class="auth-profile-list">
+      <div class="auth-profile-item" onclick="selectProfile(this)">
+        <div class="auth-profile-avatar" style="background:linear-gradient(135deg,#FF7EB3,#B388FF);display:flex;align-items:center;justify-content:center;font-size:20px;">&#128100;</div>
+        <div class="auth-profile-info">
+          <div class="auth-profile-name">微信用户</div>
+          <div class="auth-profile-tag">微信昵称头像</div>
+        </div>
+        <div class="auth-check" id="profileCheck">&#10003;</div>
+      </div>
+      <div class="auth-new-profile">
+        <div class="auth-new-icon">+</div>
+        <div class="auth-profile-info">
+          <div class="auth-profile-name" style="color:#888">新建昵称头像</div>
+        </div>
+        <span style="color:#666;font-size:18px;">&#8250;</span>
+      </div>
+    </div>
+
+    <div class="auth-buttons">
+      <button class="auth-btn-allow" onclick="confirmAuth()">允许</button>
+      <button class="auth-btn-deny" onclick="closeAuth()">拒绝</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: HOME ===== -->
+  <div class="screen home-screen" id="screen-home">
+    <div class="home-header">
+      <div>
+        <div class="home-greeting">下午好 &#9728;&#65039;</div>
+        <div class="home-name">小明同学</div>
+      </div>
+      <div class="home-avatar"><svg viewBox="0 0 32 32" width="32" height="32"><path d="M5,11 Q3,5 10,2 Q15,0 20,4 Q25,0 29,5 Q31,10 27,16 Q23,22 16,24 Q9,22 5,16 Q3,11 5,11Z" fill="#FF7EB3"/><circle cx="12" cy="11" r="2.5" fill="#2D2B3D"/><circle cx="20" cy="11" r="2.5" fill="#2D2B3D"/></svg></div>
+    </div>
+
+    <div class="hero-card" onclick="goScreen('chat')">
+      <div class="hero-emoji">&#127912;</div>
+      <div class="hero-title">开始新的规划</div>
+      <div class="hero-desc">和AI聊聊你的想法，<br>获得你的专属路径卡牌</div>
+      <div class="hero-arrow">&#10140;&#65039;</div>
+    </div>
+
+    <div class="home-section-title">&#128203; 最近的规划</div>
+    <div class="task-list">
+      <div class="task-item" onclick="goScreen('card')">
+        <div class="task-icon" style="background:var(--pink-bg)">&#127968;</div>
+        <div class="task-info">
+          <div class="task-title">国内读研还是直接工作</div>
+          <div class="task-meta">2张卡牌 · 3天前</div>
+        </div>
+        <div class="task-badge done">已完成</div>
+      </div>
+      <div class="task-item" onclick="goScreen('chat')">
+        <div class="task-icon" style="background:var(--blue-bg)">&#127760;</div>
+        <div class="task-info">
+          <div class="task-title">出国留学申请规划</div>
+          <div class="task-meta">对话中 · 刚刚</div>
+        </div>
+        <div class="task-badge chat">进行中</div>
+      </div>
+      <div class="task-item" onclick="goScreen('card')">
+        <div class="task-icon" style="background:var(--purple-bg)">&#128187;</div>
+        <div class="task-info">
+          <div class="task-title">转行做AI产品经理</div>
+          <div class="task-meta">1张卡牌 · 1周前</div>
+        </div>
+        <div class="task-badge done">已完成</div>
+      </div>
+    </div>
+
+    <div class="tab-bar" id="tabBar">
+      <div class="tab-item active" onclick="switchTab('home')">
+        <span class="tab-icon">&#127968;</span>
+        <span class="tab-label">首页</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('chat')">
+        <span class="tab-icon">&#128172;</span>
+        <span class="tab-label">对话</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('history')">
+        <span class="tab-icon">&#128338;</span>
+        <span class="tab-label">历史</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: CHAT ===== -->
+  <div class="screen chat-screen" id="screen-chat">
+    <div class="chat-header">
+      <div class="chat-back" onclick="goScreen('home')">&#8592;</div>
+      <div class="chat-title-area">
+        <div class="chat-title">AI 规划助手</div>
+        <div class="chat-subtitle">正在对话</div>
+      </div>
+      <div class="msg-avatar" style="width:36px;height:36px;border-radius:50%;background:#FF7EB3;display:flex;align-items:center;justify-content:center;overflow:hidden;"><svg viewBox="0 0 32 32" width="36" height="36"><path d="M5,11 Q3,5 10,2 Q15,0 20,4 Q25,0 29,5 Q31,10 27,16 Q23,22 16,24 Q9,22 5,16 Q3,11 5,11Z" fill="#FF7EB3"/><circle cx="12" cy="11" r="2.5" fill="#2D2B3D"/><circle cx="20" cy="11" r="2.5" fill="#2D2B3D"/></svg></div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <!-- Messages will be injected -->
+    </div>
+
+    <div id="generateBtnWrap" style="display:none;">
+      <button class="btn-generate-card" onclick="generateCard()">
+        &#127912; 生成我的路径卡牌
+      </button>
+    </div>
+
+    <div class="chat-input-area" id="chatInputArea">
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="说说你的想法..." onkeydown="if(event.key==='Enter')sendMessage()">
+        <button class="chat-send" onclick="sendMessage()">&#10148;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: CARD ===== -->
+  <div class="screen card-screen" id="screen-card">
+    <div class="card-header">
+      <div class="card-back" onclick="goScreen('home')">&#8592;</div>
+      <div class="card-header-title">路径卡牌</div>
+    </div>
+
+    <div class="card-container" id="cardContainer">
+      <!-- Cards will be injected -->
+    </div>
+
+    <div class="card-actions" id="cardActions">
+      <button class="card-btn card-btn-switch" id="btnSwitch" onclick="switchCard()">
+        &#127922; 换一张 <span id="switchCount">(3/5)</span>
+      </button>
+      <button class="card-btn card-btn-save" onclick="savePoster()">
+        &#128247; 保存海报
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: HISTORY ===== -->
+  <div class="screen history-screen" id="screen-history">
+    <div class="history-header">
+      <div class="history-title">规划历史</div>
+      <div class="history-count">共3次规划</div>
+    </div>
+
+    <div class="history-item" onclick="goScreen('card')">
+      <div class="history-emoji" style="background:var(--pink-bg)">&#127968;</div>
+      <div class="history-info">
+        <div class="history-name">国内读研还是直接工作</div>
+        <div class="history-desc">了解了你的专业背景和兴趣方向，生成了2张路径卡牌</div>
+        <div class="history-bottom">
+          <span class="history-date">3天前</span>
+          <span class="history-cards-count">&#127912; 2张</span>
+        </div>
+      </div>
+      <div class="history-delete">&#10060;</div>
+    </div>
+
+    <div class="history-item" onclick="goScreen('chat')">
+      <div class="history-emoji" style="background:var(--blue-bg)">&#127760;</div>
+      <div class="history-info">
+        <div class="history-name">出国留学申请规划</div>
+        <div class="history-desc">对话进行中，正在了解你的留学意向</div>
+        <div class="history-bottom">
+          <span class="history-date">刚刚</span>
+          <span class="history-cards-count" style="background:var(--blue-bg);color:var(--blue);">&#128994; 对话中</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="history-item" onclick="goScreen('card')">
+      <div class="history-emoji" style="background:var(--purple-bg)">&#128187;</div>
+      <div class="history-info">
+        <div class="history-name">转行做AI产品经理</div>
+        <div class="history-desc">分析了你的技术背景和产品思维，生成了1张卡牌</div>
+        <div class="history-bottom">
+          <span class="history-date">1周前</span>
+          <span class="history-cards-count">&#127912; 1张</span>
+        </div>
+      </div>
+      <div class="history-delete">&#10060;</div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-item" onclick="switchTab('home')">
+        <span class="tab-icon">&#127968;</span>
+        <span class="tab-label">首页</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('chat')">
+        <span class="tab-icon">&#128172;</span>
+        <span class="tab-label">对话</span>
+      </div>
+      <div class="tab-item active" onclick="switchTab('history')">
+        <span class="tab-icon">&#128338;</span>
+        <span class="tab-label">历史</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transition Overlay -->
+  <div class="transition-overlay" id="transOverlay">
+    <div class="transition-emoji" id="transEmoji">&#127912;</div>
+    <div class="transition-text" id="transText">正在生成你的卡牌...</div>
+  </div>
+</div>
+
+<script>
+// ===== CARD DATA =====
+const cardSets = [
+  {
+    path: '数字游民自由职业',
+    tagline: '用一杯咖啡的工资，活成诗和远方',
+    illust: '🏝️',
+    bg1: '🌴',
+    bg2: '☁️',
+    style: 'chibi',
+    dims: [
+      { icon: '⚡', name: '稳定需求', score: 28, color: '#FFD93D', desc: '你骨子里就不是一个安分的人，月薪再高你也想跑。这不是缺点，这是天赋。' },
+      { icon: '🔥', name: '冒险指数', score: 82, color: '#FF7EB3', desc: '你不是在规划人生，你是在豪赌——但至少赌注是自己，输赢都认。' },
+      { icon: '🫧', name: '内耗预警', score: 55, color: '#B388FF', desc: '最消耗你的不是自由职业本身，是深夜刷朋友圈看到别人晒年终奖。' },
+      { icon: '🕊️', name: '自由指数', score: 92, color: '#6BCB77', desc: '早上10点自然醒，下午在海边咖啡馆写方案。代价是没人帮你交社保。' },
+      { icon: '⏳', name: '延迟满足', score: 35, color: '#FFB347', desc: '好消息是你不用等3年，坏消息是前3个月就是地狱难度。' },
+      { icon: '🔗', name: '社交属性', score: 38, color: '#7EC8E3', desc: '准备好一个人吃火锅了。不过你会发现，数字游民的圈子比你想象的温暖。' },
+    ],
+    summary: '原来你不是讨厌工作，你只是讨厌通勤和早八',
+    summaryEmoji: '🥺'
+  },
+  {
+    path: '国内读研深造',
+    tagline: '用三年换一张入场券，值不值？',
+    illust: '📚',
+    bg1: '🎓',
+    bg2: '🌸',
+    style: 'chibi',
+    dims: [
+      { icon: '⚡', name: '稳定需求', score: 75, color: '#FFD93D', desc: '你需要的不是稳定，是安全感。研究生院恰好能给你三年的时间假装世界很安全。' },
+      { icon: '🔥', name: '冒险指数', score: 25, color: '#FF7EB3', desc: '你选了一条大多数人都会走的路，不是因为没野心，是因为你算过概率。' },
+      { icon: '🫧', name: '内耗预警', score: 70, color: '#B388FF', desc: '最大的内耗不是写论文，是毕业那年发现同学已经年薪30万而你还在投简历。' },
+      { icon: '🕊️', name: '自由指数', score: 30, color: '#6BCB77', desc: '三年导师制，你的时间属于课题组和组会。自由？那是什么，能加鸡腿吗。' },
+      { icon: '⏳', name: '延迟满足', score: 85, color: '#FFB347', desc: '你愿意用三年的苦换未来的甜。这种耐心是一种超能力——前提是你没选错方向。' },
+      { icon: '🔗', name: '社交属性', score: 68, color: '#7EC8E3', desc: '实验室里会认识一群一起掉头发的人，这些战友关系能维持一辈子。' },
+    ],
+    summary: '你不是在逃避就业，你是在给自己一个犹豫的权利',
+    summaryEmoji: '📖'
+  },
+  {
+    path: 'AI创业做自己的产品',
+    tagline: '从0到1，从一个人到一支队伍',
+    illust: '🚀',
+    bg1: '💫',
+    bg2: '🌈',
+    style: 'chibi',
+    dims: [
+      { icon: '⚡', name: '稳定需求', score: 15, color: '#FFD93D', desc: '稳定？你的字典里没有这个字。你的座右铭是：既然都要冒风险，不如冒个大的。' },
+      { icon: '🔥', name: '冒险指数', score: 95, color: '#FF7EB3', desc: '创业失败率90%，但你觉得自己是那10%。这份盲目自信恰恰是创业者的标配。' },
+      { icon: '🫧', name: '内耗预警', score: 88, color: '#B388FF', desc: '凌晨3点改bug，早上9点见投资人，下午2点和合伙人吵架。内耗是你的日常。' },
+      { icon: '🕊️', name: '自由指数', score: 60, color: '#6BCB77', desc: '你以为创业等于自由？不，你只是换了一个比老板更严苛的人给自己打工。' },
+      { icon: '⏳', name: '延迟满足', score: 72, color: '#FFB347', desc: '前18个月可能一分钱都赚不到。如果这能接受，你已经比90%的人更适合创业了。' },
+      { icon: '🔗', name: '社交属性', score: 55, color: '#7EC8E3', desc: '你会被迫变成社交达人——找合伙人、找投资、找用户。社恐？创业治百病。' },
+    ],
+    summary: '你不是在创业，你是在和自己打一场赌注最大的赌',
+    summaryEmoji: '🔥'
+  }
+];
+
+// ===== CHAT SCRIPT =====
+const chatScript = [
+  { role: 'ai', text: '聊聊你最近的烦恼吧？不用想太多，随便说。', delay: 500 },
+  { role: 'user', text: '我大三了，在考虑毕业后的方向', delay: 1500 },
+  { role: 'ai', text: '大三确实是个分叉口。你学的是什么方向？', delay: 2500 },
+  { role: 'user', text: '计算机，但现在对纯写代码没什么热情', delay: 4000 },
+  { role: 'ai', text: '技术背景但不想纯写码——这种人其实挺多的。你觉得最让你兴奋的是什么？产品？设计？还是带团队？', delay: 5500 },
+  { role: 'user', text: '可能是产品吧，我之前自己做过一个小工具，同学反馈还不错', delay: 7000 },
+  { role: 'ai', text: '已经验证过自己的想法了，这比很多人强。那你现在有几个选项在纠结？', delay: 8500 },
+  { role: 'user', text: '读研、直接找工作、或者自己做个产品试试', delay: 10000 },
+  { role: 'ai', text: '清楚了。最后一个问题：你现在能接受的最大风险是什么？比如三个月没有收入，或者放弃一个稳定的offer？', delay: 11500 },
+  { role: 'user', text: '如果方向确定的话，半年没收入也可以接受', delay: 13000 },
+  { role: 'ai', text: '够了，我大概了解你了。[READY]', delay: 14500, ready: true },
+];
+
+// ===== STATE =====
+var currentScreen = 'login';
+var chatIndex = 0;
+var chatTimer = null;
+var chatStarted = false;
+var currentCardIdx = 0;
+var switchUsed = 0;
+var MAX_SWITCH = 5;
+var isLoggedIn = false;
+
+// ===== NAVIGATION =====
+function goScreen(name) {
+  if (name === 'chat' && !isLoggedIn) { doLogin(); return; }
+
+  // Clear chat timers when leaving chat
+  if (currentScreen === 'chat' && name !== 'chat') {
+    if (chatTimer) { clearTimeout(chatTimer); chatTimer = null; }
+    chatStarted = false;
+  }
+
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) {
+    screens[i].classList.remove('active');
+  }
+  var target = document.getElementById('screen-' + name);
+  if (target) target.classList.add('active');
+  currentScreen = name;
+
+  var labels = document.querySelectorAll('.screen-label');
+  for (var i = 0; i < labels.length; i++) {
+    labels[i].classList.remove('active');
+    if (labels[i].getAttribute('data-screen') === name) {
+      labels[i].classList.add('active');
+    }
+  }
+
+  if (name === 'card') renderCard(currentCardIdx);
+  if (name === 'chat') startChat();
+}
+
+function switchTab(tab) {
+  var map = { home: 'home', chat: 'chat', history: 'history' };
+  goScreen(map[tab]);
+}
+
+function showAuth() {
+  document.getElementById('authOverlay').classList.add('active');
+}
+
+function closeAuth() {
+  document.getElementById('authOverlay').classList.remove('active');
+}
+
+function confirmAuth() {
+  closeAuth();
+  // Show binding success animation
+  var overlay = document.getElementById('transOverlay');
+  overlay.classList.add('active');
+  document.getElementById('transEmoji').textContent = '&#9989;';
+  document.getElementById('transText').textContent = '授权成功！正在绑定...';
+
+  setTimeout(function() {
+    document.getElementById('transText').textContent = '绑定成功！欢迎来到 Traction';
+    setTimeout(function() {
+      overlay.classList.remove('active');
+      isLoggedIn = true;
+      goScreen('home');
+    }, 800);
+  }, 1200);
+}
+
+function doLogin() {
+  // Legacy: direct login without auth popup
+  var overlay = document.getElementById('transOverlay');
+  overlay.classList.add('active');
+  document.getElementById('transEmoji').textContent = '&#9989;';
+  document.getElementById('transText').textContent = '绑定成功！欢迎来到 Traction';
+
+  setTimeout(function() {
+    overlay.classList.remove('active');
+    isLoggedIn = true;
+    goScreen('home');
+  }, 1500);
+}
+
+function navTo(screen) {
+  goScreen(screen);
+}
+
+// ===== CHAT =====
+function startChat() {
+  if (chatStarted) return;
+  chatStarted = true;
+  chatIndex = 0;
+  var msgs = document.getElementById('chatMessages');
+  msgs.innerHTML = '';
+  document.getElementById('generateBtnWrap').style.display = 'none';
+  nextChatMsg();
+}
+
+function nextChatMsg() {
+  if (chatIndex >= chatScript.length) return;
+  var msg = chatScript[chatIndex];
+  chatIndex++;
+
+  var container = document.getElementById('chatMessages');
+
+  if (msg.role === 'ai') {
+    var typingDiv = document.createElement('div');
+    typingDiv.className = 'msg ai';
+    typingDiv.innerHTML = '<div class="msg-avatar" style="background:#FF7EB3;display:flex;align-items:center;justify-content:center;overflow:hidden;"><svg viewBox="0 0 32 32" width="36" height="36"><path d="M5,11 Q3,5 10,2 Q15,0 20,4 Q25,0 29,5 Q31,10 27,16 Q23,22 16,24 Q9,22 5,16 Q3,11 5,11Z" fill="#FF7EB3"/><circle cx="12" cy="11" r="2.5" fill="#2D2B3D"/><circle cx="20" cy="11" r="2.5" fill="#2D2B3D"/></svg></div>' +
+      '<div class="msg-bubble"><div class="typing-indicator">' +
+      '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>' +
+      '</div></div>';
+    container.appendChild(typingDiv);
+    container.scrollTop = container.scrollHeight;
+
+    var displayText = msg.text.replace('[READY]', '');
+    var isReady = !!msg.ready;
+
+    chatTimer = setTimeout(function() {
+      typingDiv.querySelector('.msg-bubble').innerHTML = displayText;
+      if (isReady) {
+        setTimeout(function() {
+          document.getElementById('generateBtnWrap').style.display = 'block';
+          container.scrollTop = container.scrollHeight;
+        }, 500);
+      }
+      container.scrollTop = container.scrollHeight;
+
+      if (chatIndex < chatScript.length) {
+        var nextDelay = chatScript[chatIndex].delay - msg.delay;
+        if (nextDelay < 500) nextDelay = 500;
+        chatTimer = setTimeout(nextChatMsg, nextDelay);
+      }
+    }, 1200);
+  } else {
+    var userDiv = document.createElement('div');
+    userDiv.className = 'msg user';
+    userDiv.innerHTML = '<div class="msg-avatar">你</div><div class="msg-bubble">' + msg.text + '</div>';
+    container.appendChild(userDiv);
+    container.scrollTop = container.scrollHeight;
+
+    if (chatIndex < chatScript.length) {
+      var nextDelay = chatScript[chatIndex].delay - msg.delay;
+      if (nextDelay < 500) nextDelay = 500;
+      chatTimer = setTimeout(nextChatMsg, nextDelay);
+    }
+  }
+}
+
+function sendMessage() {
+  var input = document.getElementById('chatInput');
+  if (!input.value.trim()) return;
+  var text = input.value.trim();
+  input.value = '';
+
+  var container = document.getElementById('chatMessages');
+  var userDiv = document.createElement('div');
+  userDiv.className = 'msg user';
+  userDiv.innerHTML = '<div class="msg-avatar">你</div><div class="msg-bubble">' + text + '</div>';
+  container.appendChild(userDiv);
+  container.scrollTop = container.scrollHeight;
+}
+
+function generateCard() {
+  var overlay = document.getElementById('transOverlay');
+  overlay.classList.add('active');
+  document.getElementById('transEmoji').textContent = '✨';
+  document.getElementById('transText').textContent = '正在生成你的路径卡牌...';
+
+  setTimeout(function() {
+    overlay.classList.remove('active');
+    currentCardIdx = 0;
+    switchUsed = 0;
+    chatStarted = false;
+    if (chatTimer) { clearTimeout(chatTimer); chatTimer = null; }
+    goScreen('card');
+  }, 2000);
+}
+
+// ===== CARD RENDERING =====
+function renderCard(idx) {
+  var card = cardSets[idx];
+  if (!card) return;
+
+  var container = document.getElementById('cardContainer');
+  var dimsHtml1 = '';
+  for (var i = 0; i < 3; i++) {
+    dimsHtml1 += renderDimItem(card.dims[i]);
+  }
+  var dimsHtml2 = '';
+  for (var i = 3; i < 6; i++) {
+    dimsHtml2 += renderDimItem(card.dims[i]);
+  }
+
+  var dotsHtml = '';
+  for (var i = 0; i < cardSets.length; i++) {
+    dotsHtml += '<div class="card-dot ' + (i === idx ? 'active' : '') + '" onclick="currentCardIdx=' + i + ';renderCard(' + i + ')"></div>';
+  }
+
+  container.innerHTML =
+    '<div class="path-card">' +
+      '<div class="card-illustration" style="background:linear-gradient(135deg,' + card.dims[3].color + '15,' + card.dims[1].color + '15)">' +
+        '<div class="card-illust-bg1">' + card.bg1 + '</div>' +
+        '<div class="card-illust-bg2">' + card.bg2 + '</div>' +
+        '<div class="card-illust-scene">' + card.illust + '</div>' +
+        '<div class="card-illust-label">Chibi Style</div>' +
+      '</div>' +
+      '<div class="card-path-name">' +
+        '<h2>' + card.path + '</h2>' +
+        '<div class="card-path-tagline">' + card.tagline + '</div>' +
+      '</div>' +
+      '<div class="dim-layer-section">' +
+        '<div class="dim-layer-label">&#128100; 揭示你自己</div>' +
+        dimsHtml1 +
+      '</div>' +
+      '<div class="dim-layer-section" style="margin-top:4px">' +
+        '<div class="dim-layer-label">&#128200; 预演你的未来</div>' +
+        dimsHtml2 +
+      '</div>' +
+      '<div class="card-summary">' +
+        '<div class="card-summary-emoji">' + card.summaryEmoji + '</div>' +
+        '<div class="card-summary-text">"' + card.summary + '"</div>' +
+      '</div>' +
+      '<div class="card-nav-dots">' + dotsHtml + '</div>' +
+    '</div>';
+
+  // Animate bars
+  setTimeout(function() {
+    var bars = container.querySelectorAll('.dim-bar-fill');
+    for (var i = 0; i < bars.length; i++) {
+      bars[i].style.width = bars[i].getAttribute('data-width');
+    }
+  }, 100);
+
+  updateSwitchBtn();
+}
+
+function renderDimItem(d) {
+  return '<div class="dim-item">' +
+    '<div class="dim-icon-wrap" style="background:' + d.color + '18">' + d.icon + '</div>' +
+    '<div class="dim-content">' +
+      '<div class="dim-head">' +
+        '<span class="dim-name">' + d.name + '</span>' +
+        '<span class="dim-score" style="color:' + d.color + '">' + d.score + '</span>' +
+      '</div>' +
+      '<div class="dim-bar-wrap">' +
+        '<div class="dim-bar-fill" style="width:0%;background:' + d.color + '" data-width="' + d.score + '%"></div>' +
+      '</div>' +
+      '<div class="dim-desc">' + d.desc + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function switchCard() {
+  if (switchUsed >= MAX_SWITCH) return;
+  switchUsed++;
+  currentCardIdx = (currentCardIdx + 1) % cardSets.length;
+
+  var overlay = document.getElementById('transOverlay');
+  overlay.classList.add('active');
+  document.getElementById('transEmoji').textContent = '🎲';
+  document.getElementById('transText').textContent = '换牌中... (' + switchUsed + '/' + MAX_SWITCH + ')';
+
+  setTimeout(function() {
+    overlay.classList.remove('active');
+    renderCard(currentCardIdx);
+  }, 1200);
+}
+
+function updateSwitchBtn() {
+  var btn = document.getElementById('btnSwitch');
+  var count = document.getElementById('switchCount');
+  count.textContent = '(' + (MAX_SWITCH - switchUsed) + '/' + MAX_SWITCH + ')';
+  btn.disabled = switchUsed >= MAX_SWITCH;
+}
+
+function savePoster() {
+  var overlay = document.getElementById('transOverlay');
+  overlay.classList.add('active');
+  document.getElementById('transEmoji').textContent = '📸';
+  document.getElementById('transText').textContent = '海报已保存到相册';
+
+  setTimeout(function() {
+    overlay.classList.remove('active');
+  }, 1500);
+}
+</script>
+</body>
+</html>

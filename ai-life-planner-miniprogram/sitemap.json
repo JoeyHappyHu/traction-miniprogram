@@ -1,0 +1,7 @@
+{
+  "desc": "For WeChat Mini Program sitemap",
+  "rules": [{
+    "action": "allow",
+    "page": "*"
+  }]
+}

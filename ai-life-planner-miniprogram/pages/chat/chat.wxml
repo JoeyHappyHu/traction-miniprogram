@@ -1,0 +1,23 @@
+<!--pages/chat/chat.wxml-->
+<view class="chat-container">
+  <scroll-view class="chat-scroll" scroll-y="true" scroll-into-view="{{scrollTo}}" bindscrolltolower="onScrollToBottom">
+    <view wx:for="{{messages}}" wx:key="id" class="message-wrapper {{item.role === 'user' ? 'user' : 'ai'}}">
+      <view class="chat-message {{item.role === 'user' ? 'user-message' : 'ai-message'}}">
+        {{item.content}}
+      </view>
+    </view>
+    
+    <view wx:if="{{isTyping}}" class="message-wrapper ai">
+      <view class="chat-message ai-message typing">AI 正在思考...</view>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input class="chat-input" placeholder="输入你的回答..." model:value="{{inputValue}}" bindconfirm="sendMessage" />
+    <button class="send-btn" bindtap="sendMessage" disabled="{{!inputValue || isTyping}}">发送</button>
+  </view>
+  
+  <view wx:if="{{showGenerateBtn}}" class="generate-section">
+    <button class="generate-btn" bindtap="generateCards">生成我的未来规划卡牌</button>
+  </view>
+</view>

@@ -1,0 +1,15 @@
+<!--pages/login/login.wxml-->
+<view class="login-container">
+  <view class="logo">
+    <text class="title">AI 人生规划师</text>
+    <text class="subtitle">第一性原理 · 苏格拉底对话</text>
+  </view>
+  
+  <button class="login-btn" bindtap="handleLogin" open-type="getUserInfo" type="primary">
+    使用微信登录
+  </button>
+  
+  <view class="intro">
+    <text>与资深规划专家对话，生成专属未来情绪卡牌</text>
+  </view>
+</view>
