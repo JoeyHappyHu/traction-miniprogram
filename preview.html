@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Traction AI规划 - 小程序原型预览</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0a0a14;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 手机框架 */
+.phone-frame {
+  width: 375px;
+  height: 750px;
+  background: #0f0f1a;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 2px #333;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 状态栏 */
+.status-bar {
+  height: 44px;
+  background: #0f0f1a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+.status-bar .time { font-size: 14px; color: #fff; font-weight: 600; }
+.status-bar .icons { font-size: 12px; color: #fff; display: flex; gap: 6px; }
+
+/* 导航栏 */
+.nav-bar {
+  height: 44px;
+  background: #0f0f1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.nav-bar .title { font-size: 16px; color: #fff; font-weight: 600; }
+.nav-bar .back {
+  position: absolute;
+  left: 16px;
+  color: #6c5ce7;
+  font-size: 24px;
+  cursor: pointer;
+  display: none;
+}
+
+/* 页面容器 */
+.pages-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.page {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s;
+}
+.page.hidden-left { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+.page.hidden-right { transform: translateX(100%); opacity: 0; pointer-events: none; }
+.page.active { transform: translateX(0); opacity: 1; }
+
+/* TabBar */
+.tab-bar {
+  height: 60px;
+  background: #1a1a2e;
+  display: flex;
+  border-top: 1px solid #2d2d44;
+  flex-shrink: 0;
+}
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-item .tab-icon { font-size: 22px; margin-bottom: 2px; }
+.tab-item .tab-label { font-size: 10px; color: #666; }
+.tab-item.active .tab-label { color: #6c5ce7; }
+
+/* ===== 首页 ===== */
+.index-page { padding-bottom: 80px; }
+.brand {
+  text-align: center;
+  padding: 60px 24px 40px;
+}
+.brand-title {
+  font-size: 42px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe, #fd79a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+}
+.brand-sub { font-size: 14px; color: #888; letter-spacing: 2px; }
+.action-area { padding: 0 32px; margin-bottom: 40px; }
+.btn-start {
+  width: 100%;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: #fff;
+  border: none;
+  border-radius: 28px;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 16px rgba(108, 92, 231, 0.4);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-start:active { opacity: 0.85; transform: scale(0.98); }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 12px;
+}
+.section-title { font-size: 16px; font-weight: 600; color: #e0e0e0; }
+.section-more { font-size: 13px; color: #6c5ce7; cursor: pointer; }
+.task-list { padding: 0 16px; }
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a2e;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.task-item:hover { background: #222240; }
+.task-title { font-size: 15px; font-weight: 500; color: #e0e0e0; margin-bottom: 4px; }
+.task-meta { font-size: 12px; color: #666; }
+.task-dot { margin: 0 4px; }
+.task-arrow { font-size: 20px; color: #444; }
+
+/* ===== 对话页 ===== */
+.chat-page { display: flex; flex-direction: column; height: 100%; }
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 12px 80px;
+}
+.message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #fff;
+  font-weight: 600;
+}
+.avatar-ai { background: linear-gradient(135deg, #6c5ce7, #a29bfe); margin-right: 8px; }
+.avatar-user { background: #2d3436; margin-left: 8px; }
+.bubble {
+  max-width: 70%;
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+.bubble-ai { background: #1e1e36; color: #e0e0e0; border-top-left-radius: 4px; }
+.bubble-user { background: linear-gradient(135deg, #6c5ce7, #5a4bd1); color: #fff; border-top-right-radius: 4px; }
+.typing-dots { display: inline-flex; margin-left: 4px; vertical-align: middle; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: #6c5ce7; margin: 0 2px; animation: bounce 1.4s infinite; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+.chat-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: #0f0f1a;
+  border-top: 1px solid #1a1a2e;
+  padding-bottom: 8px;
+}
+.card-btn-area { padding: 8px 16px; }
+.btn-generate-card {
+  width: 100%;
+  background: linear-gradient(135deg, #fd79a8, #e84393);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 10px rgba(253, 121, 168, 0.4);
+  cursor: pointer;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100%{box-shadow:0 2px 10px rgba(253,121,168,0.4)}
+  50%{box-shadow:0 2px 16px rgba(253,121,168,0.7)}
+}
+.input-area {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+}
+.chat-input {
+  flex: 1;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  border-radius: 20px;
+  padding: 9px 14px;
+  font-size: 14px;
+  border: 1px solid #2d2d44;
+  outline: none;
+}
+.chat-input::placeholder { color: #555; }
+.send-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #2d2d44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+.send-btn.active { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+
+/* ===== 卡牌页 ===== */
+.card-page { padding-bottom: 80px; }
+.top-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+.action-btn { font-size: 13px; color: #6c5ce7; cursor: pointer; padding: 4px 8px; }
+.path-tag {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  padding: 12px 24px;
+  letter-spacing: 2px;
+}
+.card-image-area {
+  margin: 8px 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+  position: relative;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-illustration {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+}
+.card-illustration .illust-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #2d1b69, #11998e);
+  opacity: 0.8;
+}
+.card-illustration .illust-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.card-illustration .illust-text {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 8px;
+}
+.dimensions { padding: 16px; }
+.dim-item {
+  margin-bottom: 14px;
+  background: #1a1a2e;
+  border-radius: 14px;
+  padding: 14px;
+}
+.dim-header { display: flex; align-items: center; margin-bottom: 8px; }
+.dim-label { font-size: 13px; font-weight: 600; color: #999; width: 32px; flex-shrink: 0; }
+.dim-bar-bg { flex: 1; height: 8px; background: #2d2d44; border-radius: 4px; margin: 0 10px; overflow: hidden; }
+.dim-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+.dim-score { font-size: 15px; font-weight: 700; width: 30px; text-align: right; flex-shrink: 0; }
+.dim-desc { font-size: 13px; color: #aaa; line-height: 1.7; }
+.summary-box {
+  margin: 0 16px;
+  padding: 16px;
+  background: rgba(108, 92, 231, 0.15);
+  border-radius: 14px;
+  text-align: center;
+  border: 1px solid rgba(108, 92, 231, 0.3);
+}
+.summary-text { font-size: 15px; font-weight: 600; color: #fff; font-style: italic; }
+.card-nav { display: flex; align-items: center; justify-content: center; padding: 12px 0 8px; }
+.nav-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #a29bfe;
+  cursor: pointer;
+  user-select: none;
+}
+.nav-btn.disabled { color: #444; pointer-events: none; }
+.nav-indicator { margin: 0 16px; font-size: 13px; color: #666; }
+.bottom-actions {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex; gap: 12px;
+  padding: 10px 16px 16px;
+  background: #0f0f1a;
+  border-top: 1px solid #1a1a2e;
+}
+.btn-switch {
+  flex: 1;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-switch:disabled { background: #2d2d44; color: #555; cursor: not-allowed; }
+.btn-save {
+  background: transparent;
+  color: #a29bfe;
+  border: 1px solid #6c5ce7;
+  border-radius: 24px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-save:disabled { border-color: #333; color: #444; cursor: not-allowed; }
+
+/* ===== 历史页 ===== */
+.history-page { padding: 12px 16px; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.page-title { font-size: 20px; font-weight: 700; color: #fff; }
+.page-count { font-size: 13px; color: #666; }
+.history-task {
+  background: #1a1a2e;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.history-task:hover { background: #222240; }
+.history-task-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.history-task-title { font-size: 15px; font-weight: 500; color: #e0e0e0; }
+.task-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.badge-chatting { background: rgba(253,203,110,0.15); color: #fdcb6e; }
+.badge-cards { background: rgba(108,92,231,0.15); color: #a29bfe; }
+.badge-done { background: rgba(0,184,148,0.15); color: #00b894; }
+.history-task-bottom { display: flex; gap: 12px; font-size: 12px; color: #666; }
+
+/* 提示标签 */
+.hint-tag {
+  position: absolute;
+  top: 12px;
+  right: -160px;
+  background: #6c5ce7;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  animation: hintFade 4s 2s forwards;
+}
+@keyframes hintFade { 0%{opacity:0} 20%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 0; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame" id="phone">
+  <!-- 状态栏 -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">📶 📡 🔋</span>
+  </div>
+
+  <!-- 导航栏 -->
+  <div class="nav-bar" id="navBar">
+    <span class="back" id="backBtn" onclick="goBack()">‹</span>
+    <span class="title" id="navTitle">Traction 规划</span>
+  </div>
+
+  <!-- 页面容器 -->
+  <div class="pages-container" id="pagesContainer">
+
+    <!-- ===== 首页 ===== -->
+    <div class="page active" id="page-index">
+      <div class="index-page">
+        <div class="brand">
+          <div class="brand-title">Traction</div>
+          <div class="brand-sub">AI 规划卡牌 · 发现你的另一条路</div>
+        </div>
+        <div class="action-area">
+          <button class="btn-start" onclick="startChat()">开始新规划</button>
+        </div>
+        <div class="section-header">
+          <span class="section-title">最近的规划</span>
+          <span class="section-more" onclick="switchTab('history')">查看全部</span>
+        </div>
+        <div class="task-list">
+          <div class="task-item" onclick="startChat()">
+            <div>
+              <div class="task-title">考研还是直接工作？</div>
+              <div class="task-meta">
+                <span style="color:#00b894">3 张卡牌</span>
+                <span class="task-dot">·</span>
+                <span class="task-status-done">已完成</span>
+              </div>
+            </div>
+            <div class="task-arrow">›</div>
+          </div>
+          <div class="task-item" onclick="startChat()">
+            <div>
+              <div class="task-title">金融转行做AI</div>
+              <div class="task-meta">
+                <span style="color:#6c5ce7">1 张卡牌</span>
+                <span class="task-dot">·</span>
+                <span class="task-status-cards">已出牌</span>
+              </div>
+            </div>
+            <div class="task-arrow">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 对话页 ===== -->
+    <div class="page hidden-right" id="page-chat">
+      <div class="chat-page">
+        <div class="chat-messages" id="chatMessages">
+          <div class="message">
+            <div class="avatar avatar-ai">T</div>
+            <div class="bubble bubble-ai">说说看，现在最让你纠结的事是什么？</div>
+          </div>
+        </div>
+        <div class="chat-bottom">
+          <div class="card-btn-area" id="cardBtnArea" style="display:none">
+            <button class="btn-generate-card" onclick="goToCards()">生成我的卡牌</button>
+          </div>
+          <div class="input-area">
+            <input class="chat-input" id="chatInput" placeholder="说说你的想法..." onkeydown="if(event.key==='Enter')sendMessage()">
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 卡牌页 ===== -->
+    <div class="page hidden-right" id="page-card">
+      <div class="card-page">
+        <div class="top-actions">
+          <span class="action-btn" onclick="goToChat()">← 继续聊</span>
+          <span class="action-btn" onclick="goHome()">新任务</span>
+        </div>
+        <div class="path-tag" id="pathTag">数字游民自由职业</div>
+        <div class="card-image-area">
+          <div class="card-illustration" id="cardIllustration">
+            <div class="illust-bg"></div>
+            <div class="illust-content">
+              <div style="font-size:60px">🏝️</div>
+              <div class="illust-text">热带海岛上，一个人戴着墨镜<br>在椰子树下用笔记本工作</div>
+            </div>
+          </div>
+        </div>
+        <div class="dimensions">
+          <div class="dim-item">
+            <div class="dim-header">
+              <span class="dim-label">风险</span>
+              <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:65%;background:#ff6b6b"></div></div>
+              <span class="dim-score" style="color:#ff6b6b">65</span>
+            </div>
+            <div class="dim-desc">收入不稳定的那几个月，你可能半夜焦虑到刷招聘软件——但这种不确定，也是自由的代价。</div>
+          </div>
+          <div class="dim-item">
+            <div class="dim-header">
+              <span class="dim-label">执行</span>
+              <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:72%;background:#feca57"></div></div>
+              <span class="dim-score" style="color:#feca57">72</span>
+            </div>
+            <div class="dim-desc">先在现有工作期间接一两个私活试试水，别急着辞职。先用副业赚到第一个1万块再说。</div>
+          </div>
+          <div class="dim-item">
+            <div class="dim-header">
+              <span class="dim-label">收益</span>
+              <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:88%;background:#00b894"></div></div>
+              <span class="dim-score" style="color:#00b894">88</span>
+            </div>
+            <div class="dim-desc">早上10点自然醒，下午在海边喝咖啡写方案。三年后你可能比上班赚得多，且再也不用打卡。</div>
+          </div>
+        </div>
+        <div class="summary-box">
+          <span class="summary-text">"原来你不是讨厌工作，你只是讨厌通勤和早八"</span>
+        </div>
+        <div class="card-nav">
+          <div class="nav-btn disabled">‹</div>
+          <span class="nav-indicator">1 / 1</span>
+          <div class="nav-btn disabled">›</div>
+        </div>
+      </div>
+      <div class="bottom-actions">
+        <button class="btn-switch" id="switchBtn" onclick="switchCard()">换一张</button>
+        <button class="btn-save">保存海报</button>
+      </div>
+    </div>
+
+    <!-- ===== 历史页 ===== -->
+    <div class="page hidden-left" id="page-history">
+      <div class="history-page">
+        <div class="page-header">
+          <span class="page-title">历史规划</span>
+          <span class="page-count">2 条记录</span>
+        </div>
+        <div class="history-task" onclick="goToCards()">
+          <div class="history-task-top">
+            <span class="history-task-title">考研还是直接工作？</span>
+            <span class="task-badge badge-done">已完成</span>
+          </div>
+          <div class="history-task-bottom">
+            <span>3 张卡牌</span>
+            <span>2026-05-08</span>
+          </div>
+        </div>
+        <div class="history-task" onclick="goToCards()">
+          <div class="history-task-top">
+            <span class="history-task-title">金融转行做AI</span>
+            <span class="task-badge badge-cards">已出牌</span>
+          </div>
+          <div class="history-task-bottom">
+            <span>1 张卡牌</span>
+            <span>2026-05-09</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TabBar -->
+  <div class="tab-bar" id="tabBar">
+    <div class="tab-item active" id="tab-home" onclick="switchTab('home')">
+      <span class="tab-icon">🏠</span>
+      <span class="tab-label">首页</span>
+    </div>
+    <div class="tab-item" id="tab-history" onclick="switchTab('history')">
+      <span class="tab-icon">📋</span>
+      <span class="tab-label">历史</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// 模拟对话数据
+const chatScript = [
+  { role: 'user', text: '我今年大三，学金融，但不太喜欢，对AI感兴趣' },
+  { role: 'ai', text: '感兴趣到什么程度？平时在做什么跟AI相关的事？' },
+  { role: 'user', text: '用过ChatGPT写作业，也会看一些AI相关的视频' },
+  { role: 'ai', text: '所以你是觉得AI有前途想转过去，还是单纯觉得好玩？这俩方向差别挺大的。' },
+  { role: 'user', text: '我觉得未来肯定是AI的天下，想提前布局' },
+  { role: 'ai', text: '说实话——你是因为真的想干这行，还是因为焦虑觉得不跟上就要被淘汰？' },
+  { role: 'user', text: '都有吧，不过我确实对技术比较好奇' },
+  { role: 'ai', text: '最后一个问题：你能接受毕业后起薪比金融行业低多少？' },
+  { role: 'user', text: '低30%以内可以接受' },
+  { role: 'ai', text: '了解了。你其实是一个对未来有焦虑但也愿意提前行动的人，核心诉求不是转行做AI工程师，而是想找一个「能吃到AI红利」的位置——对吗？\n\n我给你看看几条路，你可以挑一条最符合你直觉的。 [READY]' }
+];
+
+let chatStep = 0;
+let currentPage = 'index';
+
+function showPage(pageName) {
+  const pages = ['index', 'chat', 'card', 'history'];
+  const navTitles = { index: 'Traction 规划', chat: '和Traction聊聊', card: '我的规划卡牌', history: '历史规划' };
+  const isSubPage = ['chat', 'card'].includes(pageName);
+
+  document.getElementById('navTitle').textContent = navTitles[pageName];
+  document.getElementById('backBtn').style.display = isSubPage ? 'block' : 'none';
+  document.getElementById('tabBar').style.display = isSubPage ? 'none' : 'flex';
+
+  pages.forEach(p => {
+    const el = document.getElementById('page-' + p);
+    el.className = 'page';
+    if (p === pageName) {
+      el.classList.add('active');
+    } else if (pages.indexOf(p) < pages.indexOf(pageName)) {
+      el.classList.add('hidden-left');
+    } else {
+      el.classList.add('hidden-right');
+    }
+  });
+
+  // Tab高亮
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  if (pageName === 'index') document.getElementById('tab-home').classList.add('active');
+  if (pageName === 'history') document.getElementById('tab-history').classList.add('active');
+
+  currentPage = pageName;
+}
+
+function switchTab(tab) {
+  if (tab === 'home') showPage('index');
+  if (tab === 'history') showPage('history');
+}
+
+function startChat() {
+  chatStep = 0;
+  // 清空对话
+  const container = document.getElementById('chatMessages');
+  container.innerHTML = `
+    <div class="message">
+      <div class="avatar avatar-ai">T</div>
+      <div class="bubble bubble-ai">说说看，现在最让你纠结的事是什么？</div>
+    </div>`;
+  document.getElementById('cardBtnArea').style.display = 'none';
+  document.getElementById('chatInput').value = '';
+  showPage('chat');
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  chatStep++;
+
+  if (chatStep >= chatScript.length) {
+    addUserBubble(text);
+    addAiBubble('你刚才说的很有意思，不过我的示例对话已经走完了。真实版本会继续追问哦。');
+    return;
+  }
+
+  addUserBubble(text);
+  simulateAiReply(chatScript[chatStep].text);
+}
+
+function addUserBubble(text) {
+  const container = document.getElementById('chatMessages');
+  container.innerHTML += `
+    <div class="message" style="justify-content:flex-end">
+      <div class="bubble bubble-user">${text}</div>
+      <div class="avatar avatar-user">我</div>
+    </div>`;
+  container.scrollTop = container.scrollHeight;
+}
+
+function addAiBubble(text) {
+  const container = document.getElementById('chatMessages');
+  const cleanText = text.replace(/\[READY\]/g, '').trim();
+  container.innerHTML += `
+    <div class="message">
+      <div class="avatar avatar-ai">T</div>
+      <div class="bubble bubble-ai">${cleanText}</div>
+    </div>`;
+  container.scrollTop = container.scrollHeight;
+}
+
+function simulateAiReply(fullText) {
+  const container = document.getElementById('chatMessages');
+  const msgId = 'ai-msg-' + Date.now();
+  container.innerHTML += `
+    <div class="message" id="${msgId}">
+      <div class="avatar avatar-ai">T</div>
+      <div class="bubble bubble-ai">
+        <span class="ai-text"></span>
+        <span class="typing-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      </div>
+    </div>`;
+  container.scrollTop = container.scrollHeight;
+
+  const textEl = document.querySelector(`#${msgId} .ai-text`);
+  const dotsEl = document.querySelector(`#${msgId} .typing-dots`);
+  let i = 0;
+  const cleanText = fullText.replace(/\[READY\]/g, '').trim();
+
+  const timer = setInterval(() => {
+    if (i < cleanText.length) {
+      textEl.textContent += cleanText[i];
+      i++;
+      container.scrollTop = container.scrollHeight;
+    } else {
+      clearInterval(timer);
+      dotsEl.style.display = 'none';
+      container.scrollTop = container.scrollHeight;
+
+      // 检查是否ready
+      if (fullText.includes('[READY]')) {
+        document.getElementById('cardBtnArea').style.display = 'block';
+      }
+    }
+  }, 35);
+}
+
+function goToCards() {
+  showPage('card');
+}
+
+function goToChat() {
+  showPage('chat');
+}
+
+function goBack() {
+  if (currentPage === 'card') showPage('chat');
+  else if (currentPage === 'chat') showPage('index');
+}
+
+function goHome() {
+  showPage('index');
+}
+
+// 换牌演示
+const cardData = [
+  {
+    path: '数字游民自由职业',
+    emoji: '🏝️',
+    bg: 'linear-gradient(135deg, #2d1b69, #11998e)',
+    illust: '热带海岛上，一个人戴着墨镜<br>在椰子树下用笔记本工作',
+    risk: 65, riskDesc: '收入不稳定的那几个月，你可能半夜焦虑到刷招聘软件——但这种不确定，也是自由的代价。',
+    exec: 72, execDesc: '先在现有工作期间接一两个私活试试水，别急着辞职。先用副业赚到第一个1万块再说。',
+    benefit: 88, benefitDesc: '早上10点自然醒，下午在海边喝咖啡写方案。三年后你可能比上班赚得多，且再也不用打卡。',
+    summary: '原来你不是讨厌工作，你只是讨厌通勤和早八'
+  },
+  {
+    path: 'AI产品经理',
+    emoji: '🚀',
+    bg: 'linear-gradient(135deg, #667eea, #764ba2)',
+    illust: '一个站在火箭上的人<br>手持放大镜观察用户行为数据',
+    risk: 40, riskDesc: '最大的坑不是能力不够，是选错了公司——去了一个伪AI公司，三年后你什么也没学到。',
+    exec: 60, execDesc: '你金融背景其实是优势，去投AI金融方向的PM岗。先看懂10篇AI产品分析，再投简历。',
+    benefit: 75, benefitDesc: '懂金融的AI产品经理非常稀缺。起薪可能不如投行，但增长空间和选择自由度远超预期。',
+    summary: '你以为想转行，其实你只是想换一种方式赚钱'
+  },
+  {
+    path: '自学编程转码农',
+    emoji: '💻',
+    bg: 'linear-gradient(135deg, #f093fb, #f5576c)',
+    illust: '一个人深夜在显示器前<br>屏幕上满是彩色代码雨',
+    risk: 78, riskDesc: '转码不是报个班就完了。你大概率会在第二个月被bug搞到怀疑人生，然后开始考虑放弃。',
+    exec: 45, execDesc: 'LeetCode每天一题，GitHub上做两个项目。至少坚持6个月才能过面试，这期间你可能看不到任何回报。',
+    benefit: 92, benefitDesc: '一旦突破门槛，你的选择权会爆发式增长。远程、高薪、自由——这是普通人能触及的最强杠杆。',
+    summary: '说白了你想用技能买一份终极自由'
+  }
+];
+
+let cardIndex = 0;
+
+function switchCard() {
+  cardIndex++;
+  if (cardIndex >= cardData.length) {
+    document.getElementById('switchBtn').disabled = true;
+    document.getElementById('switchBtn').textContent = '已穷尽所有路径';
+    return;
+  }
+
+  const c = cardData[cardIndex];
+  document.getElementById('pathTag').textContent = c.path;
+  document.getElementById('cardIllustration').innerHTML = `
+    <div class="illust-bg" style="background:${c.bg}"></div>
+    <div class="illust-content">
+      <div style="font-size:60px">${c.emoji}</div>
+      <div class="illust-text">${c.illust}</div>
+    </div>`;
+
+  const dims = document.querySelectorAll('.dim-item');
+  const data = [
+    { label: '风险', score: c.risk, desc: c.riskDesc, color: '#ff6b6b' },
+    { label: '执行', score: c.exec, desc: c.execDesc, color: '#feca57' },
+    { label: '收益', score: c.benefit, desc: c.benefitDesc, color: '#00b894' }
+  ];
+  dims.forEach((dim, i) => {
+    const d = data[i];
+    dim.querySelector('.dim-label').textContent = d.label;
+    dim.querySelector('.dim-bar-fill').style.width = d.score + '%';
+    dim.querySelector('.dim-bar-fill').style.background = d.color;
+    dim.querySelector('.dim-score').textContent = d.score;
+    dim.querySelector('.dim-score').style.color = d.color;
+    dim.querySelector('.dim-desc').textContent = d.desc;
+  });
+
+  document.querySelector('.summary-text').textContent = `"${c.summary}"`;
+  document.querySelector('.nav-indicator').textContent = `${cardIndex + 1} / ${cardData.length}`;
+
+  // 动画
+  document.getElementById('cardIllustration').style.opacity = '0';
+  setTimeout(() => { document.getElementById('cardIllustration').style.opacity = '1'; }, 50);
+}
+
+// 自动聚焦输入框提示
+document.getElementById('chatInput').addEventListener('input', function() {
+  document.getElementById('sendBtn').classList.toggle('active', this.value.trim().length > 0);
+});
+</script>
+
+</body>
+</html>

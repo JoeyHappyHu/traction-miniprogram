@@ -1,0 +1,215 @@
+/* pages/card/card.wxss */
+.card-page {
+  min-height: 100vh;
+  background: #0f0f1a;
+  padding-bottom: 200rpx;
+}
+
+/* 顶部操作栏 */
+.top-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+}
+
+.action-btn {
+  font-size: 26rpx;
+  color: #6c5ce7;
+  padding: 12rpx 24rpx;
+}
+
+/* 路径标签 */
+.path-tag {
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff;
+  padding: 24rpx 48rpx;
+  letter-spacing: 4rpx;
+}
+
+/* 卡牌插画 */
+.card-image-area {
+  margin: 16rpx 32rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 40rpx rgba(108, 92, 231, 0.3);
+}
+
+.card-image {
+  width: 100%;
+  height: 520rpx;
+}
+
+/* 三维度 */
+.dimensions {
+  padding: 32rpx;
+}
+
+.dim-item {
+  margin-bottom: 36rpx;
+  background: #1a1a2e;
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+}
+
+.dim-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.dim-label {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #999;
+  width: 64rpx;
+  flex-shrink: 0;
+}
+
+.dim-bar-bg {
+  flex: 1;
+  height: 16rpx;
+  background: #2d2d44;
+  border-radius: 8rpx;
+  margin: 0 20rpx;
+  overflow: hidden;
+}
+
+.dim-bar-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  transition: width 0.8s ease;
+}
+
+.dim-score {
+  font-size: 30rpx;
+  font-weight: 700;
+  width: 60rpx;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.dim-desc {
+  font-size: 26rpx;
+  color: #aaa;
+  line-height: 1.7;
+}
+
+/* 扎心总结 */
+.summary-box {
+  margin: 0 32rpx;
+  padding: 32rpx;
+  background: rgba(108, 92, 231, 0.15);
+  border-radius: 20rpx;
+  text-align: center;
+  border: 1rpx solid rgba(108, 92, 231, 0.3);
+}
+
+.summary-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #fff;
+  font-style: italic;
+}
+
+/* 空状态/加载 */
+.empty-state, .loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.empty-text, .loading-text {
+  font-size: 28rpx;
+  color: #666;
+  margin-top: 32rpx;
+}
+
+.loading-spinner {
+  width: 48rpx;
+  height: 48rpx;
+  border: 4rpx solid #2d2d44;
+  border-top-color: #6c5ce7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 卡牌导航 */
+.card-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 0 16rpx;
+}
+
+.nav-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: #1a1a2e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  color: #a29bfe;
+}
+
+.nav-btn.disabled {
+  color: #444;
+  pointer-events: none;
+}
+
+.nav-indicator {
+  margin: 0 32rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 底部操作 */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 24rpx;
+  padding: 20rpx 32rpx;
+  background: #0f0f1a;
+  border-top: 1rpx solid #1a1a2e;
+}
+
+.btn-switch {
+  flex: 1;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: #fff;
+  border: none;
+  border-radius: 48rpx;
+  padding: 22rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.btn-switch[disabled] {
+  background: #2d2d44;
+  color: #555;
+}
+
+.btn-save {
+  background: transparent;
+  color: #a29bfe;
+  border: 2rpx solid #6c5ce7;
+  border-radius: 48rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+}
+
+.btn-save[disabled] {
+  border-color: #333;
+  color: #444;
+}

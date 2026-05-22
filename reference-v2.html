@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traction - UI风格 & 维度方案参考</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0a14; color:#ccc; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+
+.nav-top {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(10,10,20,0.9); backdrop-filter:blur(12px);
+  display:flex; padding:12px 24px; gap:12px; border-bottom:1px solid #222;
+}
+.nav-top a {
+  color:#888; text-decoration:none; font-size:14px; padding:6px 16px;
+  border-radius:20px; transition:all 0.2s; white-space:nowrap;
+}
+.nav-top a:hover, .nav-top a.active { color:#fff; background:#6c5ce7; }
+
+.section { padding:100px 24px 60px; max-width:1200px; margin:0 auto; }
+.section-label {
+  display:inline-block; font-size:12px; color:#6c5ce7; letter-spacing:2px;
+  text-transform:uppercase; margin-bottom:8px;
+}
+.section-title { font-size:32px; color:#fff; font-weight:700; margin-bottom:8px; }
+.section-desc { font-size:15px; color:#888; line-height:1.7; max-width:600px; margin-bottom:40px; }
+
+/* ===== 登录页 ===== */
+.login-phone {
+  width:320px; height:580px; background:#0f0f1a; border-radius:32px;
+  overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  display:inline-block; vertical-align:top; margin:0 20px 20px 0;
+  position:relative;
+}
+.login-phone .status { height:40px; display:flex; justify-content:space-between; align-items:center; padding:0 20px; font-size:12px; color:#fff; }
+.login-body { height:calc(100% - 40px); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; }
+.login-logo { font-size:36px; font-weight:800; margin-bottom:8px; }
+.login-sub { font-size:13px; color:#666; margin-bottom:48px; letter-spacing:1px; }
+.login-avatar { width:80px; height:80px; border-radius:50%; background:#1a1a2e; display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:32px; }
+.login-username { font-size:15px; color:#e0e0e0; margin-bottom:4px; }
+.login-hint { font-size:12px; color:#555; margin-bottom:40px; }
+.btn-wechat {
+  width:100%; padding:14px; border-radius:24px; border:none;
+  font-size:16px; font-weight:600; color:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  transition:all 0.2s;
+}
+.btn-wechat:active { opacity:0.85; transform:scale(0.98); }
+.btn-wechat-green { background:#07c160; }
+.btn-wechat-dark { background:linear-gradient(135deg,#1a1a2e,#2d2d44); border:1px solid #333; }
+.login-skip { font-size:12px; color:#555; margin-top:20px; cursor:pointer; text-decoration:underline; }
+
+/* ===== 风格对比 ===== */
+.styles-grid { display:flex; gap:20px; flex-wrap:wrap; }
+.style-card {
+  flex:1; min-width:280px; border-radius:16px; overflow:hidden;
+  position:relative; cursor:pointer; transition:transform 0.2s;
+}
+.style-card:hover { transform:translateY(-4px); }
+.style-label {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:16px 20px; z-index:2;
+}
+.style-name { font-size:18px; font-weight:700; color:#fff; }
+.style-desc { font-size:12px; color:rgba(255,255,255,0.7); margin-top:4px; }
+.style-tag {
+  display:inline-block; font-size:10px; padding:2px 8px; border-radius:8px;
+  background:rgba(255,255,255,0.2); color:#fff; margin-top:8px;
+}
+
+/* 暗黑塔罗风 */
+.phone-dark-tarot {
+  width:280px; height:520px; background:#0a0a12; border-radius:24px;
+  overflow:hidden; box-shadow:0 16px 48px rgba(0,0,0,0.6);
+  display:flex; flex-direction:column; position:relative;
+}
+.tarot-header { padding:40px 20px 16px; text-align:center; }
+.tarot-title { font-size:28px; font-weight:800; color:#d4af37; letter-spacing:6px; }
+.tarot-sub { font-size:11px; color:#665e3a; letter-spacing:3px; margin-top:4px; }
+.tarot-divider { width:60px; height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:16px auto; }
+.tarot-card {
+  margin:0 24px; background:linear-gradient(160deg,#1a1520,#0f0a18);
+  border:1px solid #2a2035; border-radius:16px; padding:16px; position:relative; overflow:hidden;
+}
+.tarot-card::before {
+  content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+  background:conic-gradient(from 0deg,transparent,rgba(212,175,55,0.03),transparent,rgba(212,175,55,0.03));
+  animation:tarotSpin 8s linear infinite;
+}
+@keyframes tarotSpin { to { transform:rotate(360deg); } }
+.tarot-inner { position:relative; z-index:1; }
+.tarot-path { text-align:center; font-size:14px; color:#d4af37; font-weight:600; letter-spacing:2px; margin-bottom:12px; }
+.tarot-illust {
+  height:120px; background:linear-gradient(135deg,#1a0a2e,#0a1e2e); border-radius:10px;
+  display:flex; align-items:center; justify-content:center; font-size:48px; margin-bottom:12px;
+}
+.tarot-dims { display:flex; flex-direction:column; gap:8px; }
+.tarot-dim { display:flex; align-items:center; gap:8px; }
+.tarot-dim-label { font-size:11px; color:#665e3a; width:36px; flex-shrink:0; }
+.tarot-dim-bar { flex:1; height:4px; background:#1a1520; border-radius:2px; overflow:hidden; }
+.tarot-dim-fill { height:100%; border-radius:2px; }
+.tarot-dim-score { font-size:11px; font-weight:600; width:20px; text-align:right; }
+.tarot-dim-desc { font-size:10px; color:#555; line-height:1.6; margin-top:2px; padding-left:44px; }
+.tarot-summary {
+  margin:12px 24px; padding:12px; background:rgba(212,175,55,0.06);
+  border:1px solid rgba(212,175,55,0.15); border-radius:10px;
+  text-align:center; font-size:12px; color:#d4af37; font-style:italic;
+}
+.tarot-actions {
+  position:absolute; bottom:0; left:0; right:0; padding:12px 24px 24px;
+  display:flex; gap:10px;
+}
+.tarot-btn {
+  flex:1; padding:10px; border-radius:20px; border:1px solid #2a2035;
+  background:#0f0a18; color:#d4af37; font-size:12px; cursor:pointer; text-align:center;
+}
+
+/* 像素卡牌风 */
+.phone-pixel {
+  width:280px; height:520px; background:#1a1c2c; border-radius:24px;
+  overflow:hidden; box-shadow:0 16px 48px rgba(0,0,0,0.6);
+  display:flex; flex-direction:column; position:relative;
+  image-rendering:pixelated;
+}
+.pixel-header { padding:40px 20px 12px; text-align:center; }
+.pixel-title { font-size:24px; font-weight:800; color:#f77622; letter-spacing:4px; font-family:monospace; }
+.pixel-sub { font-size:10px; color:#83769c; letter-spacing:2px; margin-top:4px; font-family:monospace; }
+.pixel-card {
+  margin:12px 20px; background:#262b44; border:3px solid #333c57; border-radius:8px;
+  padding:12px; position:relative;
+  box-shadow:6px 6px 0 #14152b, inset 0 0 0 1px #3d4466;
+}
+.pixel-corner {
+  position:absolute; width:12px; height:12px; border:2px solid #f77622;
+}
+.pixel-corner.tl { top:-2px; left:-2px; border-right:none; border-bottom:none; }
+.pixel-corner.tr { top:-2px; right:-2px; border-left:none; border-bottom:none; }
+.pixel-corner.bl { bottom:-2px; left:-2px; border-right:none; border-top:none; }
+.pixel-corner.br { bottom:-2px; right:-2px; border-left:none; border-top:none; }
+.pixel-path { text-align:center; font-size:12px; color:#f77622; font-weight:700; font-family:monospace; margin-bottom:10px; letter-spacing:1px; }
+.pixel-illust {
+  height:100px; background:linear-gradient(180deg,#1a1c2c,#333c57);
+  border-radius:4px; display:flex; align-items:center; justify-content:center;
+  font-size:40px; margin-bottom:10px; border:2px solid #333c57;
+}
+.pixel-dims { display:flex; flex-direction:column; gap:6px; }
+.pixel-dim { background:#1a1c2c; border:2px solid #333c57; border-radius:4px; padding:8px; }
+.pixel-dim-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.pixel-dim-name { font-size:10px; font-family:monospace; font-weight:700; }
+.pixel-dim-score { font-size:10px; font-family:monospace; font-weight:700; }
+.pixel-dim-bar { height:6px; background:#14152b; border-radius:1px; }
+.pixel-dim-fill { height:100%; border-radius:1px; }
+.pixel-dim-desc { font-size:9px; color:#83769c; margin-top:4px; font-family:monospace; line-height:1.5; }
+.pixel-hp-bar {
+  display:flex; gap:4px; margin-top:8px;
+}
+.pixel-hp { height:4px; flex:1; background:#14152b; border-radius:1px; }
+.pixel-hp.filled { background:#41ff5e; box-shadow:0 0 4px #41ff5e; }
+.pixel-summary {
+  margin:10px 20px; padding:10px; background:#262b44; border:2px solid #333c57;
+  border-radius:4px; text-align:center; font-size:11px; color:#f77622;
+  font-family:monospace;
+  box-shadow:4px 4px 0 #14152b;
+}
+.pixel-actions {
+  position:absolute; bottom:0; left:0; right:0; padding:10px 20px 24px;
+  display:flex; gap:8px;
+}
+.pixel-btn {
+  flex:1; padding:10px; border:2px solid #333c57; background:#262b44;
+  color:#f77622; font-size:11px; cursor:pointer; text-align:center;
+  font-family:monospace; font-weight:700; border-radius:4px;
+  box-shadow:3px 3px 0 #14152b;
+}
+.pixel-btn:active { box-shadow:1px 1px 0 #14152b; transform:translate(2px,2px); }
+
+/* 赛博霓虹风 */
+.phone-cyber {
+  width:280px; height:520px; background:#0a0010; border-radius:24px;
+  overflow:hidden; box-shadow:0 16px 48px rgba(0,0,0,0.6);
+  display:flex; flex-direction:column; position:relative;
+}
+.cyber-header { padding:40px 20px 12px; text-align:center; position:relative; }
+.cyber-title {
+  font-size:26px; font-weight:900; letter-spacing:4px;
+  background:linear-gradient(90deg,#ff00ff,#00ffff,#ff00ff);
+  background-size:200% auto; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  animation:cyberShift 3s linear infinite;
+}
+@keyframes cyberShift { to { background-position:200% center; } }
+.cyber-sub { font-size:10px; color:#ff00ff80; letter-spacing:3px; margin-top:4px; }
+.cyber-card {
+  margin:12px 20px; background:rgba(255,0,255,0.03);
+  border:1px solid rgba(255,0,255,0.3); border-radius:12px;
+  padding:14px; position:relative;
+  box-shadow:0 0 20px rgba(255,0,255,0.1), inset 0 0 20px rgba(0,255,255,0.05);
+}
+.cyber-path { text-align:center; font-size:13px; color:#00ffff; font-weight:700; letter-spacing:2px; margin-bottom:10px; }
+.cyber-illust {
+  height:100px; background:linear-gradient(135deg,rgba(255,0,255,0.1),rgba(0,255,255,0.1));
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  font-size:40px; margin-bottom:10px;
+  border:1px solid rgba(0,255,255,0.2);
+  box-shadow:inset 0 0 30px rgba(0,255,255,0.1);
+}
+.cyber-dims { display:flex; flex-direction:column; gap:8px; }
+.cyber-dim { padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.05); }
+.cyber-dim-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.cyber-dim-name { font-size:11px; font-weight:700; letter-spacing:1px; }
+.cyber-dim-score { font-size:13px; font-weight:900; }
+.cyber-dim-bar { height:3px; background:rgba(255,255,255,0.05); border-radius:2px; position:relative; overflow:hidden; }
+.cyber-dim-fill { height:100%; border-radius:2px; position:relative; }
+.cyber-dim-fill::after {
+  content:''; position:absolute; right:0; top:-2px; width:6px; height:7px;
+  background:inherit; filter:brightness(2); border-radius:50%;
+  box-shadow:0 0 8px currentColor;
+}
+.cyber-dim-desc { font-size:10px; color:#888; margin-top:6px; line-height:1.6; }
+.cyber-summary {
+  margin:10px 20px; padding:12px; text-align:center;
+  background:rgba(255,0,255,0.05); border:1px solid rgba(255,0,255,0.2);
+  border-radius:10px; font-size:12px; color:#00ffff; font-style:italic;
+  box-shadow:0 0 15px rgba(255,0,255,0.1);
+}
+.cyber-actions {
+  position:absolute; bottom:0; left:0; right:0; padding:10px 20px 24px;
+  display:flex; gap:8px;
+}
+.cyber-btn {
+  flex:1; padding:10px; border-radius:20px;
+  font-size:11px; cursor:pointer; text-align:center; font-weight:700;
+  position:relative; overflow:hidden;
+}
+.cyber-btn-main {
+  background:linear-gradient(135deg,rgba(255,0,255,0.3),rgba(0,255,255,0.3));
+  border:1px solid rgba(255,0,255,0.5); color:#fff;
+  box-shadow:0 0 20px rgba(255,0,255,0.2);
+}
+.cyber-btn-sub {
+  background:transparent; border:1px solid rgba(0,255,255,0.3); color:#00ffff;
+}
+
+/* 维度方案 */
+.dim-proposal {
+  max-width:900px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr; gap:20px;
+}
+.dim-layer {
+  background:#1a1a2e; border-radius:16px; padding:24px;
+  border:1px solid #2d2d44;
+}
+.dim-layer-title { font-size:16px; font-weight:700; color:#fff; margin-bottom:4px; }
+.dim-layer-desc { font-size:12px; color:#666; margin-bottom:16px; }
+.dim-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:14px; }
+.dim-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.dim-name { font-size:14px; font-weight:600; color:#e0e0e0; }
+.dim-why { font-size:12px; color:#888; margin-top:2px; line-height:1.6; }
+.dim-example { font-size:11px; color:#555; font-style:italic; margin-top:2px; }
+
+.viral-box {
+  margin-top:32px; background:linear-gradient(135deg,rgba(108,92,231,0.1),rgba(253,121,168,0.1));
+  border:1px solid rgba(108,92,231,0.2); border-radius:16px; padding:24px;
+  max-width:900px; margin-left:auto; margin-right:auto;
+}
+.viral-title { font-size:18px; font-weight:700; color:#fff; margin-bottom:8px; }
+.viral-compare { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
+.viral-col-title { font-size:13px; font-weight:600; color:#6c5ce7; margin-bottom:8px; }
+.viral-point { font-size:13px; color:#aaa; line-height:1.7; padding-left:12px; border-left:2px solid #2d2d44; margin-bottom:8px; }
+
+.scroll-hint {
+  text-align:center; font-size:13px; color:#444; padding:20px;
+  letter-spacing:2px;
+}
+</style>
+</head>
+<body>
+
+<!-- 导航 -->
+<div class="nav-top">
+  <a href="#login" class="active" onclick="scrollTo_(this,'login')">1. 登录页</a>
+  <a href="#styles" onclick="scrollTo_(this,'styles')">2. UI风格</a>
+  <a href="#dimensions" onclick="scrollTo_(this,'dimensions')">3. 新维度方案</a>
+  <a href="#viral" onclick="scrollTo_(this,'viral')">4. 传播逻辑</a>
+</div>
+
+<!-- 1. 登录页 -->
+<div class="section" id="login">
+  <div class="section-label">问题1</div>
+  <div class="section-title">微信一键登录</div>
+  <div class="section-desc">两种登录方案供选择。推荐方案B——先体验后登录，降低进入门槛。</div>
+
+  <div style="display:flex; gap:40px; flex-wrap:wrap;">
+    <!-- 方案A：强制登录 -->
+    <div style="text-align:center;">
+      <div class="login-phone">
+        <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="login-body">
+          <div style="font-size:40px; margin-bottom:24px;">🔮</div>
+          <div class="login-logo" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Traction</div>
+          <div class="login-sub">AI 规划卡牌</div>
+          <div style="width:100%;margin-bottom:40px;">
+            <div style="background:#1a1a2e;border-radius:12px;padding:16px;text-align:left;margin-bottom:12px;">
+              <div style="font-size:12px;color:#555;margin-bottom:8px;">为什么需要登录？</div>
+              <div style="font-size:11px;color:#888;line-height:1.6;">保存你的规划记录和卡牌收藏，下次打开直接看到历史</div>
+            </div>
+          </div>
+          <button class="btn-wechat btn-wechat-green">
+            <span style="font-size:20px;">💬</span> 微信一键登录
+          </button>
+          <div class="login-skip">暂时跳过</div>
+        </div>
+      </div>
+      <div style="font-size:13px;color:#6c5ce7;margin-top:12px;font-weight:600;">方案A · 先登录后体验</div>
+      <div style="font-size:12px;color:#666;margin-top:4px;">打开即要求授权，数据归属清晰</div>
+    </div>
+
+    <!-- 方案B：先体验 -->
+    <div style="text-align:center;">
+      <div class="login-phone">
+        <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="login-body">
+          <div style="font-size:40px; margin-bottom:24px;">🔮</div>
+          <div class="login-logo" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Traction</div>
+          <div class="login-sub">AI 规划卡牌</div>
+          <button class="btn-wechat btn-wechat-dark" style="margin-bottom:12px;">
+            <span style="font-size:18px;">💬</span> 微信快速登录
+          </button>
+          <div style="width:100%;display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="flex:1;height:1px;background:#2d2d44;"></div>
+            <span style="font-size:11px;color:#444;">或者</span>
+            <div style="flex:1;height:1px;background:#2d2d44;"></div>
+          </div>
+          <button class="btn-wechat" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe);">
+            先看看再说
+          </button>
+          <div style="font-size:10px;color:#444;margin-top:16px;line-height:1.6;">
+            游客模式下卡牌不会被保存<br>登录后可查看历史记录
+          </div>
+        </div>
+      </div>
+      <div style="font-size:13px;color:#fd79a8;margin-top:12px;font-weight:600;">方案B · 先体验后登录（推荐）</div>
+      <div style="font-size:12px;color:#666;margin-top:4px;">降低进入门槛，生成卡牌后再引导登录保存</div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:20px;" class="scroll-hint">— 往下滚动查看更多 —</div>
+
+<!-- 2. UI风格 -->
+<div class="section" id="styles">
+  <div class="section-label">问题2</div>
+  <div class="section-title">三种UI风格候选</div>
+  <div class="section-desc">每种风格的卡牌展示效果如下。按钮已移至底部不遮挡内容（问题3已修复）。</div>
+
+  <div style="display:flex; gap:24px; flex-wrap:wrap; justify-content:center;">
+
+    <!-- 暗黑塔罗风 -->
+    <div style="text-align:center;">
+      <div class="phone-dark-tarot">
+        <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="tarot-header">
+          <div class="tarot-title">TRACTION</div>
+          <div class="tarot-sub">PATH READING</div>
+          <div class="tarot-divider"></div>
+        </div>
+        <div class="tarot-card">
+          <div class="tarot-inner">
+            <div class="tarot-path">数字游民自由职业</div>
+            <div class="tarot-illust" style="background:linear-gradient(135deg,#1a0a2e,#0a2e1e);">🏝️</div>
+            <div class="tarot-dims">
+              <div class="tarot-dim">
+                <span class="tarot-dim-label">稳定</span>
+                <div class="tarot-dim-bar"><div class="tarot-dim-fill" style="width:35%;background:#d4af37;"></div></div>
+                <span class="tarot-dim-score" style="color:#d4af37;">35</span>
+              </div>
+              <div class="tarot-dim-desc">收入飘忽不定的那几个月，你可能半夜惊醒——但自由有自由的代价。</div>
+              <div class="tarot-dim">
+                <span class="tarot-dim-label">冒险</span>
+                <div class="tarot-dim-bar"><div class="tarot-dim-fill" style="width:78%;background:#ff6b6b;"></div></div>
+                <span class="tarot-dim-score" style="color:#ff6b6b;">78</span>
+              </div>
+              <div class="tarot-dim-desc">放弃稳定薪水和五险一金，需要你在不确定性中找到自己的节奏。</div>
+              <div class="tarot-dim">
+                <span class="tarot-dim-label">自由</span>
+                <div class="tarot-dim-bar"><div class="tarot-dim-fill" style="width:92%;background:#00b894;"></div></div>
+                <span class="tarot-dim-score" style="color:#00b894;">92</span>
+              </div>
+              <div class="tarot-dim-desc">早上10点自然醒，下午在海边喝咖啡写方案。再也不用打卡。</div>
+              <div class="tarot-dim">
+                <span class="tarot-dim-label">内耗</span>
+                <div class="tarot-dim-bar"><div class="tarot-dim-fill" style="width:55%;background:#feca57;"></div></div>
+                <span class="tarot-dim-score" style="color:#feca57;">55</span>
+              </div>
+              <div class="tarot-dim-desc">最大的内耗不是没钱，是看着朋友圈别人晒年终奖时的心跳。</div>
+              <div class="tarot-dim">
+                <span class="tarot-dim-label">社交</span>
+                <div class="tarot-dim-bar"><div class="tarot-dim-fill" style="width:40%;background:#a29bfe;"></div></div>
+                <span class="tarot-dim-score" style="color:#a29bfe;">40</span>
+              </div>
+              <div class="tarot-dim-desc">孤独是自由职业的标配，你得学会跟自己相处。</div>
+            </div>
+          </div>
+        </div>
+        <div class="tarot-summary">"原来你不是讨厌工作，你只是讨厌通勤和早八"</div>
+        <div class="tarot-actions">
+          <div class="tarot-btn">换一张</div>
+          <div class="tarot-btn">保存海报</div>
+        </div>
+      </div>
+      <div style="font-size:14px;color:#d4af37;margin-top:12px;font-weight:700;">暗黑塔罗风</div>
+      <div style="font-size:12px;color:#666;margin-top:4px;">神秘感 + 高级感，像拆塔罗牌一样拆未来</div>
+      <div style="margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(212,175,55,0.15);color:#d4af37;">高朋友圈可晒性</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(212,175,55,0.15);color:#d4af37;">神秘感</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(212,175,55,0.15);color:#d4af37;">18-35岁</span>
+      </div>
+    </div>
+
+    <!-- 像素卡牌风 -->
+    <div style="text-align:center;">
+      <div class="phone-pixel">
+        <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="pixel-header">
+          <div class="pixel-title">TRACTION</div>
+          <div class="pixel-sub">:: PATH CARD ::</div>
+        </div>
+        <div class="pixel-card">
+          <div class="pixel-corner tl"></div>
+          <div class="pixel-corner tr"></div>
+          <div class="pixel-corner bl"></div>
+          <div class="pixel-corner br"></div>
+          <div class="pixel-path">> 数字游民自由职业</div>
+          <div class="pixel-illust" style="font-size:36px;">🏝️</div>
+          <div class="pixel-dims">
+            <div class="pixel-dim">
+              <div class="pixel-dim-head">
+                <span class="pixel-dim-name" style="color:#ff6b6b;">稳定性</span>
+                <span class="pixel-dim-score" style="color:#ff6b6b;">35/100</span>
+              </div>
+              <div class="pixel-dim-bar"><div class="pixel-dim-fill" style="width:35%;background:#ff6b6b;"></div></div>
+              <div class="pixel-dim-desc">收入飘忽不定的那几个月，半夜惊醒是常态。</div>
+            </div>
+            <div class="pixel-dim">
+              <div class="pixel-dim-head">
+                <span class="pixel-dim-name" style="color:#f77622;">冒险值</span>
+                <span class="pixel-dim-score" style="color:#f77622;">78/100</span>
+              </div>
+              <div class="pixel-dim-bar"><div class="pixel-dim-fill" style="width:78%;background:#f77622;"></div></div>
+              <div class="pixel-dim-desc">放弃五险一金，在不确定性里找节奏。</div>
+            </div>
+            <div class="pixel-dim">
+              <div class="pixel-dim-head">
+                <span class="pixel-dim-name" style="color:#41ff5e;">自由度</span>
+                <span class="pixel-dim-score" style="color:#41ff5e;">92/100</span>
+              </div>
+              <div class="pixel-dim-bar"><div class="pixel-dim-fill" style="width:92%;background:#41ff5e;"></div></div>
+              <div class="pixel-dim-desc">10点自然醒，海边写方案，告别打卡。</div>
+            </div>
+            <div class="pixel-dim">
+              <div class="pixel-dim-head">
+                <span class="pixel-dim-name" style="color:#feca57;">内耗值</span>
+                <span class="pixel-dim-score" style="color:#feca57;">55/100</span>
+              </div>
+              <div class="pixel-dim-bar"><div class="pixel-dim-fill" style="width:55%;background:#feca57;"></div></div>
+              <div class="pixel-dim-desc">最大内耗不是没钱，是看别人晒年终奖时的心跳。</div>
+            </div>
+            <div class="pixel-dim">
+              <div class="pixel-dim-head">
+                <span class="pixel-dim-name" style="color:#a29bfe;">社交值</span>
+                <span class="pixel-dim-score" style="color:#a29bfe;">40/100</span>
+              </div>
+              <div class="pixel-dim-bar"><div class="pixel-dim-fill" style="width:40%;background:#a29bfe;"></div></div>
+              <div class="pixel-dim-desc">孤独是自由职业的标配装备。</div>
+            </div>
+          </div>
+          <div class="pixel-hp-bar">
+            <div class="pixel-hp filled"></div>
+            <div class="pixel-hp filled"></div>
+            <div class="pixel-hp filled"></div>
+            <div class="pixel-hp filled"></div>
+            <div class="pixel-hp"></div>
+          </div>
+        </div>
+        <div class="pixel-summary">"你不是讨厌工作，你只是讨厌通勤和早八"</div>
+        <div class="pixel-actions">
+          <div class="pixel-btn">换一张</div>
+          <div class="pixel-btn">保存海报</div>
+        </div>
+      </div>
+      <div style="font-size:14px;color:#f77622;margin-top:12px;font-weight:700;">像素卡牌风</div>
+      <div style="font-size:12px;color:#666;margin-top:4px;">游戏化、轻松、天然有"卡牌"感</div>
+      <div style="margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(247,118,34,0.15);color:#f77622;">游戏化</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(247,118,34,0.15);color:#f77622;">趣味性</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(247,118,34,0.15);color:#f77622;">Z世代</span>
+      </div>
+    </div>
+
+    <!-- 赛博霓虹风 -->
+    <div style="text-align:center;">
+      <div class="phone-cyber">
+        <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+        <div class="cyber-header">
+          <div class="cyber-title">TRACTION</div>
+          <div class="cyber-sub">FUTURE PATH DECODE</div>
+        </div>
+        <div class="cyber-card">
+          <div class="cyber-path">数字游民自由职业</div>
+          <div class="cyber-illust">🏝️</div>
+          <div class="cyber-dims">
+            <div class="cyber-dim">
+              <div class="cyber-dim-head">
+                <span class="cyber-dim-name" style="color:#ff6b6b;">稳定指数</span>
+                <span class="cyber-dim-score" style="color:#ff6b6b;">35</span>
+              </div>
+              <div class="cyber-dim-bar"><div class="cyber-dim-fill" style="width:35%;background:#ff6b6b;color:#ff6b6b;"></div></div>
+              <div class="cyber-dim-desc">收入飘忽不定，半夜可能惊醒。</div>
+            </div>
+            <div class="cyber-dim">
+              <div class="cyber-dim-head">
+                <span class="cyber-dim-name" style="color:#ff00ff;">冒险指数</span>
+                <span class="cyber-dim-score" style="color:#ff00ff;">78</span>
+              </div>
+              <div class="cyber-dim-bar"><div class="cyber-dim-fill" style="width:78%;background:#ff00ff;color:#ff00ff;"></div></div>
+              <div class="cyber-dim-desc">放弃五险一金，不确定性是你的新日常。</div>
+            </div>
+            <div class="cyber-dim">
+              <div class="cyber-dim-head">
+                <span class="cyber-dim-name" style="color:#00ffff;">自由指数</span>
+                <span class="cyber-dim-score" style="color:#00ffff;">92</span>
+              </div>
+              <div class="cyber-dim-bar"><div class="cyber-dim-fill" style="width:92%;background:#00ffff;color:#00ffff;"></div></div>
+              <div class="cyber-dim-desc">10点自然醒，海边写方案，告别打卡。</div>
+            </div>
+            <div class="cyber-dim">
+              <div class="cyber-dim-head">
+                <span class="cyber-dim-name" style="color:#feca57;">内耗预警</span>
+                <span class="cyber-dim-score" style="color:#feca57;">55</span>
+              </div>
+              <div class="cyber-dim-bar"><div class="cyber-dim-fill" style="width:55%;background:#feca57;color:#feca57;"></div></div>
+              <div class="cyber-dim-desc">最大内耗不是没钱，是看别人晒年终奖时的心跳。</div>
+            </div>
+            <div class="cyber-dim">
+              <div class="cyber-dim-head">
+                <span class="cyber-dim-name" style="color:#a29bfe;">社交属性</span>
+                <span class="cyber-dim-score" style="color:#a29bfe;">40</span>
+              </div>
+              <div class="cyber-dim-bar"><div class="cyber-dim-fill" style="width:40%;background:#a29bfe;color:#a29bfe;"></div></div>
+              <div class="cyber-dim-desc">孤独是自由职业的标配。</div>
+            </div>
+          </div>
+        </div>
+        <div class="cyber-summary">"你不是讨厌工作，你只是讨厌通勤和早八"</div>
+        <div class="cyber-actions">
+          <div class="cyber-btn cyber-btn-main">换一张</div>
+          <div class="cyber-btn cyber-btn-sub">保存海报</div>
+        </div>
+      </div>
+      <div style="font-size:14px;color:#ff00ff;margin-top:12px;font-weight:700;">赛博霓虹风</div>
+      <div style="font-size:12px;color:#666;margin-top:4px;">科技感 + 未来感，匹配AI产品定位</div>
+      <div style="margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(255,0,255,0.15);color:#ff00ff;">科技感</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(255,0,255,0.15);color:#ff00ff;">潮</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(255,0,255,0.15);color:#ff00ff;">20-30岁</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. 维度方案 -->
+<div class="section" id="dimensions">
+  <div class="section-label">问题4</div>
+  <div class="section-title">升级后的6维评估体系</div>
+  <div class="section-desc">
+    原来的「风险/执行/收益」是理性分析维度，不具传播性。<br>
+    新方案分两层：第一层揭示用户画像（引发"这说的就是我"），第二层预演路径未来（情绪化钩子）。
+  </div>
+
+  <div class="dim-proposal">
+    <div class="dim-layer">
+      <div class="dim-layer-title">第一层：揭示你自己</div>
+      <div class="dim-layer-desc">这些维度说的是"你是一个什么样的人"，天然有分享欲</div>
+      <div class="dim-item">
+        <div class="dim-icon" style="background:rgba(254,202,87,0.15);">⚡</div>
+        <div>
+          <div class="dim-name">稳定需求 Stability</div>
+          <div class="dim-why">你有多需要确定性？有人月薪3万也要辞职，有人月薪8000也觉得很安全——这个数字会戳中人的自我认知。</div>
+          <div class="dim-example">"稳定需求仅28%——你骨子里就是个不安分的人"</div>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon" style="background:rgba(255,107,107,0.15);">🔥</div>
+        <div>
+          <div class="dim-name">冒险指数 Adventure</div>
+          <div class="dim-why">你愿意为可能性放弃确定性吗？高分=赌徒心态，低分=求稳派——用户会自发归类并分享。</div>
+          <div class="dim-example">"冒险指数82%——你不是在规划，你是在豪赌"</div>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon" style="background:rgba(162,155,254,0.15);">🫧</div>
+        <div>
+          <div class="dim-name">内耗预警 Burnout</div>
+          <div class="dim-why">这条路会消耗你多少心力？不是生理内耗，是情绪内耗——深夜焦虑、同辈比较、自我怀疑。</div>
+          <div class="dim-example">"内耗预警67%——最消耗你的不是工作本身，是朋友圈"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dim-layer">
+      <div class="dim-layer-title">第二层：预演你的未来</div>
+      <div class="dim-layer-desc">这些维度说的是"这条路会带你去哪"，用场景化描述替代分析</div>
+      <div class="dim-item">
+        <div class="dim-icon" style="background:rgba(0,184,148,0.15);">🕊️</div>
+        <div>
+          <div class="dim-name">自由指数 Freedom</div>
+          <div class="dim-why">这条路给你多大的自主权？时间是你的还是别人的？这个数字直接关联到年轻人的终极渴望。</div>
+          <div class="dim-example">"自由指数91%——代价是，没人帮你交社保"</div>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon" style="background:rgba(253,121,168,0.15);">⏳</div>
+        <div>
+          <div class="dim-name">延迟满足 Patience</div>
+          <div class="dim-why">你要等多久才能尝到甜头？1个月和3年的差距，决定了这条路适不适合急躁的人。</div>
+          <div class="dim-example">"延迟满足指数低——你等不了3年，但好消息是你也不用"</div>
+        </div>
+      </div>
+      <div class="dim-item">
+        <div class="dim-icon" style="background:rgba(108,92,231,0.15);">🔗</div>
+        <div>
+          <div class="dim-name">社交属性 Social</div>
+          <div class="dim-why">这条路让你更孤独还是更连接？内向的人可能反而需要高社交的路径来突破舒适区。</div>
+          <div class="dim-example">"社交值38%——准备好一个人吃火锅了"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. 传播逻辑 -->
+<div class="section" id="viral">
+  <div class="section-label">为什么能传播</div>
+  <div class="viral-box">
+    <div class="viral-title">MBTI 传播公式 × Traction 的适配</div>
+    <div style="font-size:13px;color:#888;margin-top:8px;line-height:1.7;">
+      MBTI能火的核心不是"准"，而是三个机制：<strong style="color:#e0e0e0;">标签化身份</strong>（我是INFP）、<strong style="color:#e0e0e0;">社交货币</strong>（"同类请举手"）、<strong style="color:#e0e0e0;">低门槛讨论</strong>（4个字母谁都能聊）。Traction的6维体系复刻了这个公式：
+    </div>
+    <div class="viral-compare">
+      <div>
+        <div class="viral-col-title">MBTI 做对了什么</div>
+        <div class="viral-point">给你一个身份标签 → "我是INFP小老头"</div>
+        <div class="viral-point">标签暗示性格特征 → "难怪我总想逃离社交"</div>
+        <div class="viral-point">16种类型创造归属感 → "找到组织了"</div>
+        <div class="viral-point">结果可预测但不完全准 → "准到我害怕"</div>
+      </div>
+      <div>
+        <div class="viral-col-title">Traction 怎么做</div>
+        <div class="viral-point">6个维度组合出"规划人格" → "高冒险低内耗型"</div>
+        <div class="viral-point">扎心总结揭示隐藏动机 → "原来我不是讨厌工作"</div>
+        <div class="viral-point">同路径的人找到共鸣 → "你也想当数字游民？"</div>
+        <div class="viral-point">每张卡都是"你的一次可能性" → "这是平行宇宙的我"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function scrollTo_(el, id) {
+  document.querySelectorAll('.nav-top a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+window.addEventListener('scroll', () => {
+  const sections = ['login','styles','dimensions','viral'];
+  for (let i = sections.length - 1; i >= 0; i--) {
+    const el = document.getElementById(sections[i]);
+    if (el.getBoundingClientRect().top <= 120) {
+      document.querySelectorAll('.nav-top a').forEach(a => a.classList.remove('active'));
+      document.querySelector(`.nav-top a[href="#${sections[i]}"]`).classList.add('active');
+      break;
+    }
+  }
+});
+</script>
+</body>
+</html>

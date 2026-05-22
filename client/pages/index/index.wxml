@@ -1,0 +1,45 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+  <!-- 顶部品牌区 -->
+  <view class="brand">
+    <view class="brand-title">Traction</view>
+    <view class="brand-sub">AI 规划卡牌 · 发现你的另一条路</view>
+  </view>
+
+  <!-- 开始按钮 -->
+  <view class="action-area">
+    <button class="btn-start" bindtap="startNewTask">
+      开始新规划
+    </button>
+  </view>
+
+  <!-- 最近任务 -->
+  <view class="recent" wx:if="{{hasTask}}">
+    <view class="section-header">
+      <text class="section-title">最近的规划</text>
+      <text class="section-more" bindtap="viewHistory">查看全部</text>
+    </view>
+    <view class="task-list">
+      <view
+        class="task-item"
+        wx:for="{{recentTasks}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        data-status="{{item.status}}"
+        bindtap="openTask"
+      >
+        <view class="task-info">
+          <view class="task-title">{{item.title}}</view>
+          <view class="task-meta">
+            <text>{{item.card_count || 0}} 张卡牌</text>
+            <text class="task-dot">·</text>
+            <text class="task-status-{{item.status}}">
+              {{item.status === 'chatting' ? '对话中' : item.status === 'cards' ? '生成卡牌' : '已完成'}}
+            </text>
+          </view>
+        </view>
+        <view class="task-arrow">›</view>
+      </view>
+    </view>
+  </view>
+</view>

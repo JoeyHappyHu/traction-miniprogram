@@ -1,0 +1,140 @@
+/* pages/history/history.wxss */
+.history-page {
+  min-height: 100vh;
+  padding: 24rpx 32rpx;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.page-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.page-count {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.loading, .empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+  color: #666;
+}
+
+.empty-icon {
+  font-size: 64rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: #999;
+  margin-bottom: 12rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: #555;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-card {
+  display: flex;
+  align-items: center;
+  background: #1a1a2e;
+  border-radius: 20rpx;
+  padding: 28rpx 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.task-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.task-badge {
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 16rpx;
+  font-weight: 500;
+}
+
+.task-badge-chatting {
+  background: rgba(253, 203, 110, 0.15);
+  color: #fdcb6e;
+}
+
+.task-badge-cards {
+  background: rgba(108, 92, 231, 0.15);
+  color: #a29bfe;
+}
+
+.task-badge-done {
+  background: rgba(0, 184, 148, 0.15);
+  color: #00b894;
+}
+
+.task-bottom {
+  display: flex;
+  gap: 24rpx;
+}
+
+.task-cards {
+  font-size: 24rpx;
+  color: #888;
+}
+
+.task-date {
+  font-size: 24rpx;
+  color: #555;
+}
+
+.task-delete {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  color: #555;
+  margin-left: 16rpx;
+}
+
+.loading-spinner {
+  width: 40rpx;
+  height: 40rpx;
+  border: 3rpx solid #2d2d44;
+  border-top-color: #6c5ce7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16rpx;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

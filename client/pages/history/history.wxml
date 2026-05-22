@@ -1,0 +1,52 @@
+<!-- pages/history/history.wxml -->
+<view class="history-page">
+  <view class="page-header">
+    <text class="page-title">历史规划</text>
+    <text class="page-count">{{tasks.length}} 条记录</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && tasks.length === 0}}">
+    <text class="empty-icon">📋</text>
+    <text class="empty-text">还没有规划记录</text>
+    <text class="empty-hint">点击首页"开始新规划"</text>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="task-list" wx:if="{{!loading && tasks.length > 0}}">
+    <view
+      class="task-card"
+      wx:for="{{tasks}}"
+      wx:key="id"
+    >
+      <view
+        class="task-content"
+        data-id="{{item.id}}"
+        data-status="{{item.status}}"
+        bindtap="openTask"
+      >
+        <view class="task-top">
+          <text class="task-title">{{item.title || '规划咨询'}}</text>
+          <view class="task-badge task-badge-{{item.status}}">
+            {{item.status === 'chatting' ? '对话中' : item.status === 'cards' ? '已出牌' : '已完成'}}
+          </view>
+        </view>
+        <view class="task-bottom">
+          <text class="task-cards">{{item.card_count || 0}} 张卡牌</text>
+          <text class="task-date">{{item.created_at}}</text>
+        </view>
+      </view>
+      <view
+        class="task-delete"
+        data-id="{{item.id}}"
+        bindtap="deleteTask"
+      >×</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,103 @@
+<!-- pages/card/card.wxml -->
+<view class="card-page">
+  <!-- 顶部操作栏 -->
+  <view class="top-actions">
+    <view class="action-btn" bindtap="backToChat">← 继续聊</view>
+    <view class="action-btn" bindtap="newTask">新任务</view>
+  </view>
+
+  <!-- 卡牌区域 -->
+  <view class="card-wrapper" wx:if="{{currentCard}}">
+    <!-- 卡牌路径标题 -->
+    <view class="path-tag">{{currentCard.path_direction}}</view>
+
+    <!-- 卡牌插画 -->
+    <view class="card-image-area">
+      <image
+        class="card-image"
+        src="{{currentCard.image_url}}"
+        mode="aspectFill"
+        lazy-load
+      />
+    </view>
+
+    <!-- 三维度指标 -->
+    <view class="dimensions">
+      <!-- 风险 -->
+      <view class="dim-item dim-risk">
+        <view class="dim-header">
+          <text class="dim-label">风险</text>
+          <view class="dim-bar-bg">
+            <view class="dim-bar-fill" style="width: {{currentCard.risk_score}}%; background: #ff6b6b;"></view>
+          </view>
+          <text class="dim-score" style="color: #ff6b6b;">{{currentCard.risk_score}}</text>
+        </view>
+        <view class="dim-desc">{{currentCard.risk_desc}}</view>
+      </view>
+
+      <!-- 执行 -->
+      <view class="dim-item dim-exec">
+        <view class="dim-header">
+          <text class="dim-label">执行</text>
+          <view class="dim-bar-bg">
+            <view class="dim-bar-fill" style="width: {{currentCard.exec_score}}%; background: #feca57;"></view>
+          </view>
+          <text class="dim-score" style="color: #feca57;">{{currentCard.exec_score}}</text>
+        </view>
+        <view class="dim-desc">{{currentCard.exec_desc}}</view>
+      </view>
+
+      <!-- 收益 -->
+      <view class="dim-item dim-benefit">
+        <view class="dim-header">
+          <text class="dim-label">收益</text>
+          <view class="dim-bar-bg">
+            <view class="dim-bar-fill" style="width: {{currentCard.benefit_score}}%; background: #00b894;"></view>
+          </view>
+          <text class="dim-score" style="color: #00b894;">{{currentCard.benefit_score}}</text>
+        </view>
+        <view class="dim-desc">{{currentCard.benefit_desc}}</view>
+      </view>
+    </view>
+
+    <!-- 扎心总结 -->
+    <view class="summary-box">
+      <text class="summary-text">"{{currentCard.summary}}"</text>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!currentCard && !isGenerating}}">
+    <text class="empty-text">准备中...</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-state" wx:if="{{isGenerating}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在为你生成新路径...</text>
+  </view>
+
+  <!-- 卡牌切换导航 -->
+  <view class="card-nav" wx:if="{{cards.length > 1}}">
+    <view class="nav-btn {{currentCardIndex <= 0 ? 'disabled' : ''}}" bindtap="prevCard">‹</view>
+    <text class="nav-indicator">{{currentCardIndex + 1}} / {{cards.length}}</text>
+    <view class="nav-btn {{currentCardIndex >= cards.length - 1 ? 'disabled' : ''}}" bindtap="nextCard">›</view>
+  </view>
+
+  <!-- 换牌/保存按钮 -->
+  <view class="bottom-actions safe-bottom">
+    <button class="btn-switch" bindtap="generateCard" disabled="{{isGenerating || isExhausted}}">
+      {{isExhausted ? '已穷尽所有路径' : '换一张'}}
+    </button>
+    <button class="btn-save" bindtap="savePoster" disabled="{{!currentCard || isGenerating}}">
+      保存海报
+    </button>
+  </view>
+
+  <!-- 隐藏的Canvas（用于海报合成） -->
+  <canvas
+    type="2d"
+    id="posterCanvas"
+    style="position: fixed; left: -9999px; top: -9999px; width: 750px; height: 1334px;"
+  />
+</view>

@@ -1,0 +1,117 @@
+/* pages/index/index.wxss */
+.container {
+  min-height: 100vh;
+  padding: 0 0 120rpx 0;
+}
+
+.brand {
+  text-align: center;
+  padding: 120rpx 48rpx 80rpx;
+}
+
+.brand-title {
+  font-size: 72rpx;
+  font-weight: 800;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe, #fd79a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 8rpx;
+  margin-bottom: 24rpx;
+}
+
+.brand-sub {
+  font-size: 28rpx;
+  color: #888;
+  letter-spacing: 4rpx;
+}
+
+.action-area {
+  padding: 0 64rpx;
+  margin-bottom: 80rpx;
+}
+
+.btn-start {
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: #fff;
+  border: none;
+  border-radius: 56rpx;
+  padding: 32rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  box-shadow: 0 8rpx 32rpx rgba(108, 92, 231, 0.4);
+}
+
+.btn-start:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40rpx 24rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.section-more {
+  font-size: 26rpx;
+  color: #6c5ce7;
+}
+
+.task-list {
+  padding: 0 32rpx;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a2e;
+  border-radius: 20rpx;
+  padding: 28rpx 32rpx;
+  margin-bottom: 16rpx;
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #e0e0e0;
+  margin-bottom: 8rpx;
+}
+
+.task-meta {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.task-dot {
+  margin: 0 8rpx;
+}
+
+.task-status-chatting {
+  color: #fdcb6e;
+}
+
+.task-status-cards {
+  color: #6c5ce7;
+}
+
+.task-status-done {
+  color: #00b894;
+}
+
+.task-arrow {
+  font-size: 40rpx;
+  color: #444;
+}
