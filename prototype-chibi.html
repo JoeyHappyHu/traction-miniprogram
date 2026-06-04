@@ -338,28 +338,85 @@ body {
 }
 
 .home-header {
-  padding: 20px 24px;
+  padding: 20px 48px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
-.home-greeting { font-size: 13px; color: var(--mid); }
-.home-name { font-size: 20px; font-weight: 700; color: var(--dark); margin-top: 2px; }
-.home-avatar {
-  width: 44px;
-  height: 44px;
+.home-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.home-user-avatar {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: #FF7EB3;
+  background: var(--blue-light);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dark);
+  cursor: pointer;
+  flex-shrink: 0;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(255, 126, 179, 0.2);
+  transition: transform 0.2s;
+}
+.home-user-avatar:active { transform: scale(0.92); }
+.home-user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.home-user-info { position: relative; }
+.home-greeting { font-size: 13px; color: var(--mid); }
+.home-name { font-size: 20px; font-weight: 700; color: var(--dark); margin-top: 2px; }
+.home-avatar-wrap { position: relative; }
+
+.user-dropdown {
+  display: none;
+  position: absolute;
+  top: 56px;
+  left: 0;
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  overflow: hidden;
+  z-index: 50;
+  min-width: 140px;
+  animation: fadeIn 0.2s ease;
+}
+.user-dropdown.show { display: block; }
+.user-dropdown-item {
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s;
+}
+.user-dropdown-item:hover { background: var(--warm-gray); }
+.user-dropdown-item.logout { color: #e74c3c; font-weight: 500; }
+
+.dropdown-overlay {
+  display: none;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 49;
+}
+.dropdown-overlay.show { display: block; }
 }
 
+.hero-card-wrap {
+  padding: 0 20px 20px 48px;
+}
 .hero-card {
-  margin: 0 20px 20px;
-  padding: 28px 24px;
+  margin: 0;
+  padding: 24px 20px;
   border-radius: var(--radius-xl);
   background: linear-gradient(135deg, var(--purple), var(--pink));
   color: white;
@@ -407,7 +464,7 @@ body {
 }
 
 .home-section-title {
-  padding: 16px 24px 12px;
+  padding: 16px 48px 12px;
   font-size: 16px;
   font-weight: 700;
   color: var(--dark);
@@ -416,7 +473,7 @@ body {
   gap: 8px;
 }
 
-.task-list { padding: 0 20px; }
+.task-list { padding: 0 48px; }
 .task-item {
   display: flex;
   align-items: center;
@@ -556,7 +613,7 @@ body {
   font-size: 18px;
 }
 .msg.ai .msg-avatar {
-  background: #FF7EB3;
+  background: var(--white);
 }
 .msg.user .msg-avatar {
   background: var(--blue-light);
@@ -700,7 +757,7 @@ body {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 100px;
+  padding-bottom: 24px;
 }
 
 .path-card {
@@ -749,17 +806,12 @@ body {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-10px) rotate(5deg); }
 }
-.card-illust-label {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 4px 12px;
-  background: rgba(255,255,255,0.7);
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--purple);
-  backdrop-filter: blur(8px);
+
+.card-inner-actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 20px 20px;
+  margin-top: 4px;
 }
 
 .card-path-name {
@@ -976,29 +1028,11 @@ body {
   overflow: hidden;
 }
 .history-item:active { transform: scale(0.98); }
-.history-emoji {
-  width: 52px;
-  height: 52px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  flex-shrink: 0;
-}
 .history-info { flex: 1; min-width: 0; }
 .history-name { font-size: 15px; font-weight: 700; color: var(--dark); }
 .history-desc { font-size: 12px; color: var(--mid); margin-top: 4px; line-height: 1.5; }
 .history-bottom { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
 .history-date { font-size: 11px; color: var(--light); }
-.history-cards-count {
-  padding: 2px 8px;
-  border-radius: 8px;
-  background: var(--pink-bg);
-  color: var(--pink);
-  font-size: 11px;
-  font-weight: 600;
-}
 .history-delete {
   position: absolute;
   top: 12px;
@@ -1042,55 +1076,7 @@ body {
   to { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
-/* ===== SCREEN NAV LABELS ===== */
-.screen-labels {
-  position: fixed;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 100;
-  pointer-events: none;
-}
-.screen-label {
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.5);
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.3s;
-  backdrop-filter: blur(8px);
-  font-family: 'Noto Sans SC', sans-serif;
-  border: 1px solid rgba(255,255,255,0.1);
-  pointer-events: auto;
-}
-.screen-label.active {
-  background: rgba(179, 136, 255, 0.3);
-  color: white;
-  border-color: rgba(179, 136, 255, 0.5);
-}
-.screen-label:hover {
-  background: rgba(179, 136, 255, 0.2);
-  color: white;
-}
 
-/* ===== PAGE TITLE ===== */
-.page-title-bar {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  text-align: center;
-}
-.page-title {
-  font-size: 14px;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 2px;
-}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 420px) {
@@ -1102,17 +1088,6 @@ body {
 </head>
 <body>
 
-<div class="page-title-bar">
-  <div class="page-title">TRACTION PROTOTYPE · CHIBI STYLE</div>
-</div>
-
-<div class="screen-labels" id="screenLabels">
-  <div class="screen-label active" data-screen="login" onclick="navTo('login')">登录</div>
-  <div class="screen-label" data-screen="home" onclick="navTo('home')">首页</div>
-  <div class="screen-label" data-screen="chat" onclick="navTo('chat')">对话</div>
-  <div class="screen-label" data-screen="card" onclick="navTo('card')">卡牌</div>
-  <div class="screen-label" data-screen="history" onclick="navTo('history')">历史</div>
-</div>
 
 <div class="phone-frame" id="phone">
   <!-- Status Bar -->
@@ -1148,7 +1123,7 @@ body {
   <div class="auth-overlay" id="authOverlay">
     <div class="auth-close" onclick="closeAuth()">关闭</div>
     <div class="auth-app-info">
-      <svg class="auth-app-icon" viewBox="0 0 32 32" width="36" height="36" style="border-radius:8px;"><path d="M5,11 Q3,5 10,2 Q15,0 20,4 Q25,0 29,5 Q31,10 27,16 Q23,22 16,24 Q9,22 5,16 Q3,11 5,11Z" fill="#FF7EB3"/><circle cx="12" cy="11" r="2.5" fill="#2D2B3D"/><circle cx="20" cy="11" r="2.5" fill="#2D2B3D"/></svg>
+      <svg class="auth-app-icon" viewBox="0 0 100 100" width="36" height="36" style="border-radius:8px;"><path d="M15,28 Q12,14 28,8 Q40,4 50,12 Q60,4 72,10 Q82,18 78,32 Q72,46 58,54 Q44,62 28,54 Q14,46 15,28Z" fill="#FF7EB3"/><circle cx="38" cy="28" r="5" fill="#2D2B3D"/><circle cx="58" cy="28" r="5" fill="#2D2B3D"/></svg>
       <div>
         <div class="auth-app-name">Traction</div>
         <div class="auth-app-action">申请使用</div>
@@ -1184,45 +1159,46 @@ body {
   <!-- ===== SCREEN: HOME ===== -->
   <div class="screen home-screen" id="screen-home">
     <div class="home-header">
-      <div>
-        <div class="home-greeting">下午好 &#9728;&#65039;</div>
-        <div class="home-name">小明同学</div>
+      <div class="home-user">
+        <div class="home-avatar-wrap">
+          <div class="home-user-avatar" onclick="toggleUserMenu(event)">小<br>明</div>
+          <div class="user-dropdown" id="userDropdown">
+            <div class="user-dropdown-item" onclick="doLogout()">&#128682; 退出登录</div>
+          </div>
+        </div>
+        <div>
+          <div class="home-greeting" id="homeGreeting">下午好 &#9728;&#65039;</div>
+          <div class="home-name">小明同学</div>
+        </div>
       </div>
-      <div class="home-avatar"><svg viewBox="0 0 32 32" width="32" height="32"><path d="M5,11 Q3,5 10,2 Q15,0 20,4 Q25,0 29,5 Q31,10 27,16 Q23,22 16,24 Q9,22 5,16 Q3,11 5,11Z" fill="#FF7EB3"/><circle cx="12" cy="11" r="2.5" fill="#2D2B3D"/><circle cx="20" cy="11" r="2.5" fill="#2D2B3D"/></svg></div>
     </div>
 
-    <div class="hero-card" onclick="goScreen('chat')">
-      <div class="hero-emoji">&#127912;</div>
+    <div class="hero-card-wrap"><div class="hero-card" onclick="goScreen('chat')">
+      <div class="hero-emoji">&#129517;</div>
       <div class="hero-title">开始新的规划</div>
       <div class="hero-desc">和AI聊聊你的想法，<br>获得你的专属路径卡牌</div>
       <div class="hero-arrow">&#10140;&#65039;</div>
-    </div>
+    </div></div>
 
     <div class="home-section-title">&#128203; 最近的规划</div>
     <div class="task-list">
       <div class="task-item" onclick="goScreen('card')">
-        <div class="task-icon" style="background:var(--pink-bg)">&#127968;</div>
         <div class="task-info">
           <div class="task-title">国内读研还是直接工作</div>
           <div class="task-meta">2张卡牌 · 3天前</div>
         </div>
-        <div class="task-badge done">已完成</div>
       </div>
       <div class="task-item" onclick="goScreen('chat')">
-        <div class="task-icon" style="background:var(--blue-bg)">&#127760;</div>
         <div class="task-info">
           <div class="task-title">出国留学申请规划</div>
           <div class="task-meta">对话中 · 刚刚</div>
         </div>
-        <div class="task-badge chat">进行中</div>
       </div>
       <div class="task-item" onclick="goScreen('card')">
-        <div class="task-icon" style="background:var(--purple-bg)">&#128187;</div>
         <div class="task-info">
           <div class="task-title">转行做AI产品经理</div>
           <div class="task-meta">1张卡牌 · 1周前</div>
         </div>
-        <div class="task-badge done">已完成</div>
       </div>
     </div>
 
@@ -1240,6 +1216,8 @@ body {
         <span class="tab-label">历史</span>
       </div>
     </div>
+
+    <div class="dropdown-overlay" id="dropdownOverlay" onclick="closeUserMenu()"></div>
   </div>
 
   <!-- ===== SCREEN: CHAT ===== -->
@@ -1250,7 +1228,7 @@ body {
         <div class="chat-title">AI 规划助手</div>
         <div class="chat-subtitle">正在对话</div>
       </div>
-      <div class="msg-avatar" style="width:36px;height:36px;border-radius:50%;background:#FF7EB3;display:flex;align-items:center;justify-content:center;overflow:hidden;"><svg viewBox="0 0 32 32" width="36" height="36"><path d="M5,11 Q3,5 10,2 Q15,0 20,4 Q25,0 29,5 Q31,10 27,16 Q23,22 16,24 Q9,22 5,16 Q3,11 5,11Z" fill="#FF7EB3"/><circle cx="12" cy="11" r="2.5" fill="#2D2B3D"/><circle cx="20" cy="11" r="2.5" fill="#2D2B3D"/></svg></div>
+      <div class="msg-avatar" style="width:36px;height:36px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;overflow:hidden;"><svg viewBox="0 0 100 100" width="36" height="36"><path d="M15,28 Q12,14 28,8 Q40,4 50,12 Q60,4 72,10 Q82,18 78,32 Q72,46 58,54 Q44,62 28,54 Q14,46 15,28Z" fill="#FF7EB3"/><circle cx="38" cy="28" r="5" fill="#2D2B3D"/><circle cx="58" cy="28" r="5" fill="#2D2B3D"/></svg></div>
     </div>
 
     <div class="chat-messages" id="chatMessages">
@@ -1282,7 +1260,7 @@ body {
       <!-- Cards will be injected -->
     </div>
 
-    <div class="card-actions" id="cardActions">
+    <div class="card-actions" id="cardActions" style="display:none;">
       <button class="card-btn card-btn-switch" id="btnSwitch" onclick="switchCard()">
         &#127922; 换一张 <span id="switchCount">(3/5)</span>
       </button>
@@ -1300,38 +1278,32 @@ body {
     </div>
 
     <div class="history-item" onclick="goScreen('card')">
-      <div class="history-emoji" style="background:var(--pink-bg)">&#127968;</div>
       <div class="history-info">
         <div class="history-name">国内读研还是直接工作</div>
         <div class="history-desc">了解了你的专业背景和兴趣方向，生成了2张路径卡牌</div>
         <div class="history-bottom">
           <span class="history-date">3天前</span>
-          <span class="history-cards-count">&#127912; 2张</span>
         </div>
       </div>
       <div class="history-delete">&#10060;</div>
     </div>
 
     <div class="history-item" onclick="goScreen('chat')">
-      <div class="history-emoji" style="background:var(--blue-bg)">&#127760;</div>
       <div class="history-info">
         <div class="history-name">出国留学申请规划</div>
         <div class="history-desc">对话进行中，正在了解你的留学意向</div>
         <div class="history-bottom">
           <span class="history-date">刚刚</span>
-          <span class="history-cards-count" style="background:var(--blue-bg);color:var(--blue);">&#128994; 对话中</span>
         </div>
       </div>
     </div>
 
     <div class="history-item" onclick="goScreen('card')">
-      <div class="history-emoji" style="background:var(--purple-bg)">&#128187;</div>
       <div class="history-info">
         <div class="history-name">转行做AI产品经理</div>
         <div class="history-desc">分析了你的技术背景和产品思维，生成了1张卡牌</div>
         <div class="history-bottom">
           <span class="history-date">1周前</span>
-          <span class="history-cards-count">&#127912; 1张</span>
         </div>
       </div>
       <div class="history-delete">&#10060;</div>
@@ -1462,14 +1434,7 @@ function goScreen(name) {
   if (target) target.classList.add('active');
   currentScreen = name;
 
-  var labels = document.querySelectorAll('.screen-label');
-  for (var i = 0; i < labels.length; i++) {
-    labels[i].classList.remove('active');
-    if (labels[i].getAttribute('data-screen') === name) {
-      labels[i].classList.add('active');
-    }
-  }
-
+  if (name === 'home') updateGreeting();
   if (name === 'card') renderCard(currentCardIdx);
   if (name === 'chat') startChat();
 }
@@ -1477,6 +1442,22 @@ function goScreen(name) {
 function switchTab(tab) {
   var map = { home: 'home', chat: 'chat', history: 'history' };
   goScreen(map[tab]);
+}
+
+// ===== TIME-BASED GREETING =====
+function updateGreeting() {
+  var hour = new Date().getHours();
+  var el = document.getElementById('homeGreeting');
+  if (!el) return;
+  if (hour >= 5 && hour < 12) {
+    el.innerHTML = '早上好 &#127748;';
+  } else if (hour >= 12 && hour < 14) {
+    el.innerHTML = '中午好 &#9728;&#65039;';
+  } else if (hour >= 14 && hour < 18) {
+    el.innerHTML = '下午好 &#127782;&#65039;';
+  } else {
+    el.innerHTML = '晚上好 &#127769;';
+  }
 }
 
 function showAuth() {
@@ -1523,6 +1504,36 @@ function navTo(screen) {
   goScreen(screen);
 }
 
+// ===== USER MENU =====
+function toggleUserMenu(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('userDropdown');
+  var ov = document.getElementById('dropdownOverlay');
+  var isOpen = dd.classList.contains('show');
+  if (isOpen) {
+    dd.classList.remove('show');
+    ov.classList.remove('show');
+  } else {
+    dd.classList.add('show');
+    ov.classList.add('show');
+  }
+}
+
+function closeUserMenu() {
+  document.getElementById('userDropdown').classList.remove('show');
+  document.getElementById('dropdownOverlay').classList.remove('show');
+}
+
+function doLogout() {
+  closeUserMenu();
+  if (confirm('确定要退出登录吗？')) {
+    isLoggedIn = false;
+    chatStarted = false;
+    chatIndex = 0;
+    goScreen('login');
+  }
+}
+
 // ===== CHAT =====
 function startChat() {
   if (chatStarted) return;
@@ -1544,7 +1555,7 @@ function nextChatMsg() {
   if (msg.role === 'ai') {
     var typingDiv = document.createElement('div');
     typingDiv.className = 'msg ai';
-    typingDiv.innerHTML = '<div class="msg-avatar" style="background:#FF7EB3;display:flex;align-items:center;justify-content:center;overflow:hidden;"><svg viewBox="0 0 32 32" width="36" height="36"><path d="M5,11 Q3,5 10,2 Q15,0 20,4 Q25,0 29,5 Q31,10 27,16 Q23,22 16,24 Q9,22 5,16 Q3,11 5,11Z" fill="#FF7EB3"/><circle cx="12" cy="11" r="2.5" fill="#2D2B3D"/><circle cx="20" cy="11" r="2.5" fill="#2D2B3D"/></svg></div>' +
+    typingDiv.innerHTML = '<div class="msg-avatar" style="background:var(--white);display:flex;align-items:center;justify-content:center;overflow:hidden;"><svg viewBox="0 0 100 100" width="36" height="36"><path d="M15,28 Q12,14 28,8 Q40,4 50,12 Q60,4 72,10 Q82,18 78,32 Q72,46 58,54 Q44,62 28,54 Q14,46 15,28Z" fill="#FF7EB3"/><circle cx="38" cy="28" r="5" fill="#2D2B3D"/><circle cx="58" cy="28" r="5" fill="#2D2B3D"/></svg></div>' +
       '<div class="msg-bubble"><div class="typing-indicator">' +
       '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>' +
       '</div></div>';
@@ -1573,7 +1584,7 @@ function nextChatMsg() {
   } else {
     var userDiv = document.createElement('div');
     userDiv.className = 'msg user';
-    userDiv.innerHTML = '<div class="msg-avatar">你</div><div class="msg-bubble">' + msg.text + '</div>';
+    userDiv.innerHTML = '<div class="msg-avatar" style="background:var(--blue-light);font-size:14px;font-weight:700;color:var(--dark);">小<br>明</div><div class="msg-bubble">' + msg.text + '</div>';
     container.appendChild(userDiv);
     container.scrollTop = container.scrollHeight;
 
@@ -1635,13 +1646,15 @@ function renderCard(idx) {
     dotsHtml += '<div class="card-dot ' + (i === idx ? 'active' : '') + '" onclick="currentCardIdx=' + i + ';renderCard(' + i + ')"></div>';
   }
 
+  // Build Tongyi Qianwen image prompt for this card
+  var imgPrompt = 'chibi style illustration, cute cartoon character, ' + card.path + ', ' + card.tagline + ', pastel colors, soft shading, big eyes, kawaii aesthetic, flat design, white background, no text';
+
   container.innerHTML =
     '<div class="path-card">' +
       '<div class="card-illustration" style="background:linear-gradient(135deg,' + card.dims[3].color + '15,' + card.dims[1].color + '15)">' +
         '<div class="card-illust-bg1">' + card.bg1 + '</div>' +
         '<div class="card-illust-bg2">' + card.bg2 + '</div>' +
         '<div class="card-illust-scene">' + card.illust + '</div>' +
-        '<div class="card-illust-label">Chibi Style</div>' +
       '</div>' +
       '<div class="card-path-name">' +
         '<h2>' + card.path + '</h2>' +
@@ -1656,10 +1669,17 @@ function renderCard(idx) {
         dimsHtml2 +
       '</div>' +
       '<div class="card-summary">' +
-        '<div class="card-summary-emoji">' + card.summaryEmoji + '</div>' +
         '<div class="card-summary-text">"' + card.summary + '"</div>' +
       '</div>' +
       '<div class="card-nav-dots">' + dotsHtml + '</div>' +
+      '<div class="card-inner-actions">' +
+        '<button class="card-btn card-btn-switch" id="btnSwitch" onclick="switchCard()">' +
+          '&#127922; 换一张 <span id="switchCount">(' + (MAX_SWITCH - switchUsed) + '/' + MAX_SWITCH + ')</span>' +
+        '</button>' +
+        '<button class="card-btn card-btn-save" onclick="savePoster()">' +
+          '&#128247; 保存海报' +
+        '</button>' +
+      '</div>' +
     '</div>';
 
   // Animate bars
@@ -1708,8 +1728,8 @@ function switchCard() {
 function updateSwitchBtn() {
   var btn = document.getElementById('btnSwitch');
   var count = document.getElementById('switchCount');
-  count.textContent = '(' + (MAX_SWITCH - switchUsed) + '/' + MAX_SWITCH + ')';
-  btn.disabled = switchUsed >= MAX_SWITCH;
+  if (count) count.textContent = '(' + (MAX_SWITCH - switchUsed) + '/' + MAX_SWITCH + ')';
+  if (btn) btn.disabled = switchUsed >= MAX_SWITCH;
 }
 
 function savePoster() {
@@ -1722,6 +1742,9 @@ function savePoster() {
     overlay.classList.remove('active');
   }, 1500);
 }
+
+// Init greeting on page load
+updateGreeting();
 </script>
 </body>
 </html>
